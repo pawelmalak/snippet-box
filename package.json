@@ -2,16 +2,33 @@
   "name": "snippet-hub",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/server.ts",
   "scripts": {
+    "init:client": "npm install --prefix=client",
+    "init:server": "npm install",
+    "init": "npm-run-all -n init:**",
     "dev:client": "npm start --prefix=client",
-    "dev:server": "npm start",
-    "dev": "npm-run-all -n dev:**"
+    "dev:server": "nodemon src/server.ts",
+    "dev": "npm-run-all -n dev:**",
+    "build:clear": "rm -rf build",
+    "build:tsc": "tsc",
+    "build": "npm-run-all -n build:**"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "npm-run-all": "^4.1.5"
+    "@types/express": "^4.17.13",
+    "@types/node": "^16.9.2",
+    "nodemon": "^2.0.12",
+    "npm-run-all": "^4.1.5",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.3"
+  },
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "sequelize": "^6.6.5",
+    "sqlite3": "^5.0.2"
   }
 }
