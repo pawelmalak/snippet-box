@@ -1,8 +1,16 @@
 import { ErrorLevel } from '../typescript/types/ErrorLevel';
 
 export class Logger {
+  private namespace: string;
+
+  constructor(namespace: string) {
+    this.namespace = namespace;
+  }
+
   public log(message: string, level: ErrorLevel = 'INFO'): void {
-    console.log(`[${this.generateTimestamp()}] [${level}] ${message}`);
+    console.log(
+      `[${this.generateTimestamp()}] [${level}] ${this.namespace}: ${message}`
+    );
   }
 
   private generateTimestamp(): string {

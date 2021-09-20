@@ -1,9 +1,9 @@
-require('ts-node/register');
+import path from 'path';
 import { Sequelize } from 'sequelize';
-import { Umzug, SequelizeStorage } from 'umzug';
+import Umzug from 'umzug';
 import { Logger } from '../utils';
 
-const logger = new Logger();
+const logger = new Logger('db');
 
 // DB config
 export const sequelize = new Sequelize({
@@ -14,15 +14,21 @@ export const sequelize = new Sequelize({
 
 // Migrations config
 const umzug = new Umzug({
-  migrations: { glob: '**/migrations/*.ts' },
-  context: sequelize.getQueryInterface(),
-  storage: new SequelizeStorage({ sequelize }),
-  logger: undefined
+  migrations: {
+    path: path.join(__dirname, './migrations'),
+    params: [sequelize.getQueryInterface()],
+    pattern: /^\d+[\w-]+\.(js|ts)$/
+  },
+  storage: 'sequelize',
+  storageOptions: {
+    sequelize
+  },
+  logging: false
 });
 
-export type Migration = typeof umzug._types.migration;
-
 export const connectDB = async () => {
+  const isDev = process.env.NODE_ENV == 'development';
+
   try {
     // Create & connect db
     await sequelize.authenticate();
@@ -30,15 +36,22 @@ export const connectDB = async () => {
 
     // Check migrations
     const pendingMigrations = await umzug.pending();
+
     if (pendingMigrations.length > 0) {
       logger.log(`Found pending migrations. Executing...`);
+
+      if (isDev) {
+        pendingMigrations.forEach(({ file }) =>
+          logger.log(`Executing ${file} migration`, 'DEV')
+        );
+      }
     }
 
     await umzug.up();
   } catch (err) {
     logger.log(`Database connection error`, 'ERROR');
 
-    if (process.env.NODE_ENV == 'development') {
+    if (isDev) {
       console.log(err);
     }
 

@@ -1,5 +1,4 @@
-import { DataTypes, Model } from 'sequelize';
-import type { Migration } from '../';
+import { DataTypes, Model, QueryInterface } from 'sequelize';
 import {
   Snippet,
   SnippetCreationAttributes
@@ -7,16 +6,15 @@ import {
 
 const { INTEGER, STRING, DATE } = DataTypes;
 
-export const up: Migration = async ({
-  context: queryInterface
-}): Promise<void> => {
+export const up = async (queryInterface: QueryInterface): Promise<void> => {
   await queryInterface.createTable<Model<Snippet, SnippetCreationAttributes>>(
     'snippets',
     {
       id: {
         type: INTEGER,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
       },
       title: {
         type: STRING,
@@ -38,8 +36,6 @@ export const up: Migration = async ({
   );
 };
 
-export const down: Migration = async ({
-  context: queryInterface
-}): Promise<void> => {
+export const down = async (queryInterface: QueryInterface): Promise<void> => {
   await queryInterface.dropTable('snippets');
 };
