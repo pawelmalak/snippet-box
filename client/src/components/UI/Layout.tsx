@@ -4,7 +4,7 @@ interface Props {
 
 export const Layout = (props: Props): JSX.Element => {
   return (
-    <div className='container'>
+    <div className='container-fluid px-5'>
       <div className='row pt-4'>{props.children}</div>
     </div>
   );

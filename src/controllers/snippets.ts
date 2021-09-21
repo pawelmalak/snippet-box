@@ -130,9 +130,7 @@ export const countSnippets = asyncWrapper(
         language
       FROM snippets
       GROUP BY language
-      ORDER BY
-        count DESC,
-        language ASC`,
+      ORDER BY language ASC`,
       {
         type: QueryTypes.SELECT
       }
