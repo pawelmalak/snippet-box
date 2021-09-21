@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import {
+  countSnippets,
   createSnippet,
   deleteSnippet,
   getAllSnippets,
@@ -12,7 +13,7 @@ export const snippetRouter = Router();
 
 snippetRouter
   .route('/')
-  .post(requireBody('title', 'language'), createSnippet)
+  .post(requireBody('title', 'language', 'code'), createSnippet)
   .get(getAllSnippets);
 
 snippetRouter
@@ -20,3 +21,5 @@ snippetRouter
   .get(getSnippet)
   .put(updateSnippet)
   .delete(deleteSnippet);
+
+snippetRouter.route('/statistics/count').get(countSnippets);

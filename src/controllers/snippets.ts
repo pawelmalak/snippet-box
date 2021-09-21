@@ -1,4 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
+import { QueryTypes } from 'sequelize';
+import { sequelize } from '../db';
 import { asyncWrapper } from '../middleware';
 import { SnippetModel } from '../models';
 import { ErrorResponse } from '../utils';
@@ -111,6 +113,33 @@ export const deleteSnippet = asyncWrapper(
 
     res.status(200).json({
       data: {}
+    });
+  }
+);
+
+/**
+ * @description Count snippets by language
+ * @route /api/snippets/statistics/count
+ * @request GET
+ */
+export const countSnippets = asyncWrapper(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const result = await sequelize.query(
+      `SELECT
+        COUNT(language) AS count,
+        language
+      FROM snippets
+      GROUP BY language
+      ORDER BY
+        count DESC,
+        language ASC`,
+      {
+        type: QueryTypes.SELECT
+      }
+    );
+
+    res.status(200).json({
+      data: result
     });
   }
 );

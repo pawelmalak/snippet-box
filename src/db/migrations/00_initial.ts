@@ -4,7 +4,7 @@ import {
   SnippetCreationAttributes
 } from '../../typescript/interfaces';
 
-const { INTEGER, STRING, DATE } = DataTypes;
+const { INTEGER, STRING, DATE, TEXT } = DataTypes;
 
 export const up = async (queryInterface: QueryInterface): Promise<void> => {
   await queryInterface.createTable<Model<Snippet, SnippetCreationAttributes>>(
@@ -20,9 +20,23 @@ export const up = async (queryInterface: QueryInterface): Promise<void> => {
         type: STRING,
         allowNull: false
       },
+      description: {
+        type: TEXT,
+        allowNull: true,
+        defaultValue: ''
+      },
       language: {
         type: STRING,
         allowNull: false
+      },
+      code: {
+        type: TEXT,
+        allowNull: false
+      },
+      docs: {
+        type: TEXT,
+        allowNull: true,
+        defaultValue: ''
       },
       createdAt: {
         type: DATE,
