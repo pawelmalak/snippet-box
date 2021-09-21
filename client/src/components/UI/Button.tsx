@@ -6,19 +6,28 @@ interface Props {
   outline?: boolean;
   small?: boolean;
   handler?: () => void;
+  classes?: string;
 }
 
 export const Button = (props: Props): JSX.Element => {
-  const { text, color, outline = false, small = false, handler } = props;
+  const {
+    text,
+    color,
+    outline = false,
+    small = false,
+    handler,
+    classes = ''
+  } = props;
 
-  const classes = [
+  const elClasses = [
     'btn',
     outline ? `btn-outline-${color}` : `btn-${color}`,
-    small && 'btn-sm'
+    small && 'btn-sm',
+    classes
   ];
 
   return (
-    <button type='button' className={classes.join(' ')} onClick={handler}>
+    <button type='button' className={elClasses.join(' ')} onClick={handler}>
       {text}
     </button>
   );

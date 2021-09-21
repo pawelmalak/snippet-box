@@ -1,14 +1,12 @@
-import { ReactJs } from '@icons-pack/react-simple-icons';
+import { Color } from '../../typescript/types';
 
-interface Props {}
+interface Props {
+  text: string;
+  color: Color;
+}
 
 export const Badge = (props: Props): JSX.Element => {
-  const Icon = require('@icons-pack/react-simple-icons/lib/components/Youtube');
+  const { text, color } = props;
 
-  return (
-    <span className='badge bg-primary'>
-      <ReactJs color='#61dafb' size={24} />
-      New
-    </span>
-  );
+  return <span className={`badge bg-${color}`}>{text}</span>;
 };

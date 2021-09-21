@@ -1,14 +1,14 @@
 .Spinner,
 .Spinner:before,
 .Spinner:after {
-  background: #3459e6;
+  background: #212529;
   -webkit-animation: load1 1s infinite ease-in-out;
   animation: load1 1s infinite ease-in-out;
   width: 1em;
   height: 4em;
 }
 .Spinner {
-  color: #3459e6;
+  color: #212529;
   text-indent: -9999em;
   margin: 88px auto;
   position: relative;
