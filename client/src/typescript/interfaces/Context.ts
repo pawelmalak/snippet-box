@@ -10,5 +10,6 @@ export interface Context {
   createSnippet: (snippet: NewSnippet) => void;
   updateSnippet: (snippet: NewSnippet, id: number) => void;
   deleteSnippet: (id: number) => void;
+  toggleSnippetPin: (id: number) => void;
   countSnippets: () => void;
 }

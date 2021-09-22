@@ -19,6 +19,7 @@ export const SnippetsContext = createContext<Context>({
   createSnippet: (snippet: NewSnippet) => {},
   updateSnippet: (snippet: NewSnippet, id: number) => {},
   deleteSnippet: (id: number) => {},
+  toggleSnippetPin: (id: number) => {},
   countSnippets: () => {}
 });
 
@@ -48,6 +49,8 @@ export const SnippetsContextProvider = (props: Props): JSX.Element => {
   };
 
   const setSnippet = (id: number): void => {
+    getSnippetById(id);
+
     if (id < 0) {
       setCurrentSnippet(null);
       return;
@@ -82,7 +85,10 @@ export const SnippetsContextProvider = (props: Props): JSX.Element => {
           ...snippets.slice(oldSnippetIdx + 1)
         ]);
         setCurrentSnippet(res.data.data);
-        history.push(`/snippet/${res.data.data.id}`, { from: '/snippets' });
+        history.push({
+          pathname: `/snippet/${res.data.data.id}`,
+          state: { from: '/snippets' }
+        });
       })
       .catch(err => console.log(err));
   };
@@ -104,6 +110,14 @@ export const SnippetsContextProvider = (props: Props): JSX.Element => {
     }
   };
 
+  const toggleSnippetPin = (id: number): void => {
+    const snippet = snippets.find(s => s.id === id);
+
+    if (snippet) {
+      updateSnippet({ ...snippet, isPinned: !snippet.isPinned }, id);
+    }
+  };
+
   const countSnippets = (): void => {
     axios
       .get<Response<LanguageCount[]>>('/api/snippets/statistics/count')
@@ -121,6 +135,7 @@ export const SnippetsContextProvider = (props: Props): JSX.Element => {
     createSnippet,
     updateSnippet,
     deleteSnippet,
+    toggleSnippetPin,
     countSnippets
   };
 

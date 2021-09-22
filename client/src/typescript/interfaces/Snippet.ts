@@ -6,6 +6,7 @@ export interface NewSnippet {
   language: string;
   code: string;
   docs?: string;
+  isPinned: boolean;
 }
 
 export interface Snippet extends Model, NewSnippet {}

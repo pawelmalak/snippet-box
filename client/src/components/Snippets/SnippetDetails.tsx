@@ -4,16 +4,27 @@ import { SnippetsContext } from '../../store';
 import { Snippet } from '../../typescript/interfaces';
 import { dateParser } from '../../utils';
 import { Button, Card } from '../UI';
+import Icon from '@mdi/react';
+import { mdiPin } from '@mdi/js';
 
 interface Props {
   snippet: Snippet;
 }
 
 export const SnippetDetails = (props: Props): JSX.Element => {
-  const { title, language, createdAt, updatedAt, description, code, id } =
-    props.snippet;
+  const {
+    title,
+    language,
+    createdAt,
+    updatedAt,
+    description,
+    code,
+    id,
+    isPinned
+  } = props.snippet;
 
-  const { deleteSnippet } = useContext(SnippetsContext);
+  const { deleteSnippet, toggleSnippetPin, setSnippet } =
+    useContext(SnippetsContext);
 
   const creationDate = dateParser(createdAt);
   const updateDate = dateParser(updatedAt);
@@ -23,7 +34,11 @@ export const SnippetDetails = (props: Props): JSX.Element => {
   };
 
   return (
-    <Card title={title}>
+    <Card>
+      <h5 className='card-title d-flex align-items-center justify-content-between'>
+        {title}
+        {isPinned ? <Icon path={mdiPin} size={0.8} color='#212529' /> : ''}
+      </h5>
       <p>{description}</p>
 
       {/* LANGUAGE */}
@@ -54,14 +69,21 @@ export const SnippetDetails = (props: Props): JSX.Element => {
             state: { from: window.location.pathname }
           }}
         >
-          <Button text='Edit' color='dark' small outline classes='me-3' />
+          <Button
+            text='Edit'
+            color='dark'
+            small
+            outline
+            classes='me-3'
+            handler={() => setSnippet(id)}
+          />
         </Link>
         <Button
-          text='Pin snippet'
+          text={`${isPinned ? 'Unpin snippet' : 'Pin snippet'}`}
           color='dark'
           small
           outline
-          handler={copyHandler}
+          handler={() => toggleSnippetPin(id)}
           classes='me-3'
         />
         <Button

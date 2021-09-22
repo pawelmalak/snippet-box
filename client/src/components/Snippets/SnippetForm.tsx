@@ -24,7 +24,8 @@ export const SnippetForm = (props: Props): JSX.Element => {
     description: '',
     language: '',
     code: '',
-    docs: ''
+    docs: '',
+    isPinned: false
   });
 
   useEffect(() => {

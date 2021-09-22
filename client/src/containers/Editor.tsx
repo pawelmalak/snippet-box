@@ -21,19 +21,21 @@ export const Editor = (): JSX.Element => {
 
   // Set snippet
   useEffect(() => {
-    setCurrentSnippet(-1);
-
     if (id) {
       setCurrentSnippet(+id);
       setInEdit(true);
     }
-  }, [id, setCurrentSnippet]);
+  }, []);
 
   return (
     <Layout>
       {inEdit ? (
         <Fragment>
-          <PageHeader title='Edit snippet' prevDest={from} />
+          <PageHeader<{ from: string }>
+            title='Edit snippet'
+            prevDest={from}
+            prevState={{ from: '/snippets' }}
+          />
           <SnippetForm inEdit />
         </Fragment>
       ) : (

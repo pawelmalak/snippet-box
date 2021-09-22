@@ -7,6 +7,7 @@ export interface Snippet extends Model {
   language: string;
   code: string;
   docs: string;
+  isPinned: number;
 }
 
 export interface SnippetCreationAttributes
