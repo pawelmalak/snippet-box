@@ -3,7 +3,6 @@ import { useLocation, useParams } from 'react-router-dom';
 import { SnippetForm } from '../components/Snippets/SnippetForm';
 import { Layout, PageHeader } from '../components/UI';
 import { SnippetsContext } from '../store';
-import { Snippet } from '../typescript/interfaces';
 
 interface Params {
   id?: string;
@@ -28,7 +27,7 @@ export const Editor = (): JSX.Element => {
       setCurrentSnippet(+id);
       setInEdit(true);
     }
-  }, []);
+  }, [id, setCurrentSnippet]);
 
   return (
     <Layout>

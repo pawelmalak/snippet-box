@@ -57,7 +57,7 @@ export const SnippetDetails = (props: Props): JSX.Element => {
           <Button text='Edit' color='dark' small outline classes='me-3' />
         </Link>
         <Button
-          text='Pin to homescreen'
+          text='Pin snippet'
           color='dark'
           small
           outline

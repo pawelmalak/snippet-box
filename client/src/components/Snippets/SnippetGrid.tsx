@@ -11,7 +11,7 @@ export const SnippetGrid = (props: Props): JSX.Element => {
   return (
     <div className='row'>
       {snippets.map(snippet => (
-        <div className='col-12 col-md-6 col-lg-3' key={snippet.id}>
+        <div className='col-12 col-md-6 col-lg-4' key={snippet.id}>
           <SnippetCard snippet={snippet} />
         </div>
       ))}

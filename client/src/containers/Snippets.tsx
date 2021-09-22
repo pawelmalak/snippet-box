@@ -1,7 +1,7 @@
 import { useEffect, useContext, useState, Fragment } from 'react';
 import { SnippetsContext } from '../store';
 import { SnippetGrid } from '../components/Snippets/SnippetGrid';
-import { Badge, Button, Card, Layout, List, Spinner } from '../components/UI';
+import { Badge, Button, Card, Layout, Spinner } from '../components/UI';
 import { Snippet } from '../typescript/interfaces';
 
 export const Snippets = (): JSX.Element => {
@@ -9,12 +9,16 @@ export const Snippets = (): JSX.Element => {
     useContext(SnippetsContext);
 
   const [filter, setFilter] = useState<string | null>(null);
-  const [localSnippets, setLocalSnippets] = useState<Snippet[]>([...snippets]);
+  const [localSnippets, setLocalSnippets] = useState<Snippet[]>([]);
 
   useEffect(() => {
     getSnippets();
     countSnippets();
   }, []);
+
+  useEffect(() => {
+    setLocalSnippets([...snippets]);
+  }, [snippets]);
 
   const filterHandler = (language: string) => {
     setFilter(language);
@@ -29,7 +33,7 @@ export const Snippets = (): JSX.Element => {
 
   return (
     <Layout>
-      <div className='col-12 col-md-4 col-lg-2'>
+      <div className='col-12 col-md-4 col-lg-3'>
         <Card title='Filter by language'>
           <Fragment>
             {languageCount.map((el, idx) => {
@@ -38,7 +42,7 @@ export const Snippets = (): JSX.Element => {
               return (
                 <div
                   className={`d-flex justify-content-between cursor-pointer ${
-                    isActiveFilter && 'text-primary fw-bold'
+                    isActiveFilter && 'text-dark fw-bold'
                   }`}
                   key={idx}
                   onClick={() => filterHandler(el.language)}
@@ -52,7 +56,7 @@ export const Snippets = (): JSX.Element => {
           <div className='d-grid mt-3'>
             <Button
               text='Clear filters'
-              color='primary'
+              color='dark'
               small
               outline
               handler={clearFilterHandler}
@@ -60,7 +64,7 @@ export const Snippets = (): JSX.Element => {
           </div>
         </Card>
       </div>
-      <div className='col-12 col-md-8 col-lg-10'>
+      <div className='col-12 col-md-8 col-lg-9'>
         {snippets.length > 0 ? (
           <SnippetGrid snippets={localSnippets} />
         ) : (
