@@ -12,7 +12,7 @@ export const App = () => {
           <Route exact path='/' component={Home} />
           <Route path='/snippets' component={Snippets} />
           <Route path='/snippet/:id' component={Snippet} />
-          <Route path='/editor' component={Editor} />
+          <Route path='/editor/:id?' component={Editor} />
         </Switch>
       </SnippetsContextProvider>
     </BrowserRouter>

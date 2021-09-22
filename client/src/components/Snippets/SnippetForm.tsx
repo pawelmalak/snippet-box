@@ -1,10 +1,23 @@
-import { ChangeEvent, FormEvent, Fragment, useState, useContext } from 'react';
+import {
+  ChangeEvent,
+  FormEvent,
+  Fragment,
+  useState,
+  useContext,
+  useEffect
+} from 'react';
 import { SnippetsContext } from '../../store';
 import { NewSnippet } from '../../typescript/interfaces';
 import { Button, Card } from '../UI';
 
-export const SnippetForm = (): JSX.Element => {
-  const { createSnippet } = useContext(SnippetsContext);
+interface Props {
+  inEdit?: boolean;
+}
+
+export const SnippetForm = (props: Props): JSX.Element => {
+  const { inEdit = false } = props;
+  const { createSnippet, currentSnippet, updateSnippet } =
+    useContext(SnippetsContext);
 
   const [formData, setFormData] = useState<NewSnippet>({
     title: '',
@@ -13,6 +26,14 @@ export const SnippetForm = (): JSX.Element => {
     code: '',
     docs: ''
   });
+
+  useEffect(() => {
+    if (inEdit) {
+      if (currentSnippet) {
+        setFormData({ ...currentSnippet });
+      }
+    }
+  }, [currentSnippet]);
 
   const inputHandler = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -25,7 +46,14 @@ export const SnippetForm = (): JSX.Element => {
 
   const formHandler = (e: FormEvent) => {
     e.preventDefault();
-    createSnippet(formData);
+
+    if (inEdit) {
+      if (currentSnippet) {
+        updateSnippet(formData, currentSnippet.id);
+      }
+    } else {
+      createSnippet(formData);
+    }
   };
 
   return (
@@ -119,7 +147,11 @@ export const SnippetForm = (): JSX.Element => {
 
             {/* SUBMIT SECTION */}
             <div className='d-grid'>
-              <Button text='Create snippet' color='dark' type='submit' />
+              <Button
+                text={`${inEdit ? 'Update snippet' : 'Create snippet'}`}
+                color='dark'
+                type='submit'
+              />
             </div>
           </form>
         </Card>

@@ -17,6 +17,8 @@ export const SnippetsContext = createContext<Context>({
   getSnippetById: (id: number) => {},
   setSnippet: (id: number) => {},
   createSnippet: (snippet: NewSnippet) => {},
+  updateSnippet: (snippet: NewSnippet, id: number) => {},
+  deleteSnippet: (id: number) => {},
   countSnippets: () => {}
 });
 
@@ -69,6 +71,39 @@ export const SnippetsContextProvider = (props: Props): JSX.Element => {
       .catch(err => console.log(err));
   };
 
+  const updateSnippet = (snippet: NewSnippet, id: number): void => {
+    axios
+      .put<Response<Snippet>>(`/api/snippets/${id}`, snippet)
+      .then(res => {
+        const oldSnippetIdx = snippets.findIndex(s => s.id === id);
+        setSnippets([
+          ...snippets.slice(0, oldSnippetIdx),
+          res.data.data,
+          ...snippets.slice(oldSnippetIdx + 1)
+        ]);
+        setCurrentSnippet(res.data.data);
+        history.push(`/snippet/${res.data.data.id}`, { from: '/snippets' });
+      })
+      .catch(err => console.log(err));
+  };
+
+  const deleteSnippet = (id: number): void => {
+    if (window.confirm('Are you sure you want to delete this snippet?')) {
+      axios
+        .delete<Response<{}>>(`/api/snippets/${id}`)
+        .then(res => {
+          const deletedSnippetIdx = snippets.findIndex(s => s.id === id);
+          setSnippets([
+            ...snippets.slice(0, deletedSnippetIdx),
+            ...snippets.slice(deletedSnippetIdx + 1)
+          ]);
+          setSnippet(-1);
+          history.push('/snippets');
+        })
+        .catch(err => console.log(err));
+    }
+  };
+
   const countSnippets = (): void => {
     axios
       .get<Response<LanguageCount[]>>('/api/snippets/statistics/count')
@@ -84,6 +119,8 @@ export const SnippetsContextProvider = (props: Props): JSX.Element => {
     getSnippetById,
     setSnippet,
     createSnippet,
+    updateSnippet,
+    deleteSnippet,
     countSnippets
   };
 
