@@ -7,6 +7,7 @@ interface Props {
   small?: boolean;
   handler?: () => void;
   classes?: string;
+  type?: 'button' | 'submit' | 'reset';
 }
 
 export const Button = (props: Props): JSX.Element => {
@@ -16,7 +17,8 @@ export const Button = (props: Props): JSX.Element => {
     outline = false,
     small = false,
     handler,
-    classes = ''
+    classes = '',
+    type = 'button'
   } = props;
 
   const elClasses = [
@@ -27,7 +29,7 @@ export const Button = (props: Props): JSX.Element => {
   ];
 
   return (
-    <button type='button' className={elClasses.join(' ')} onClick={handler}>
+    <button type={type} className={elClasses.join(' ')} onClick={handler}>
       {text}
     </button>
   );

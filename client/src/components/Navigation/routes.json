@@ -7,6 +7,10 @@
     {
       "name": "Snippets",
       "dest": "/snippets"
+    },
+    {
+      "name": "Editor",
+      "dest": "/editor"
     }
   ]
 }
