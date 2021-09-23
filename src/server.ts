@@ -1,5 +1,6 @@
+import { join } from 'path';
 import dotenv from 'dotenv';
-import express from 'express';
+import express, { Request, Response } from 'express';
 import { Logger } from './utils';
 import { connectDB } from './db';
 import { errorHandler } from './middleware';
@@ -16,6 +17,12 @@ const PORT = process.env.PORT || 5000;
 
 // App config
 app.use(express.json());
+app.use(express.static(join(__dirname, '../public')));
+
+// Serve client code
+app.get(/^\/(?!api)/, (req: Request, res: Response) => {
+  res.sendFile(join(__dirname, '../public/index.html'));
+});
 
 // Routes
 app.use('/api/snippets', snippetRouter);

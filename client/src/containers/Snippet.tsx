@@ -1,7 +1,7 @@
 import { Fragment, useContext, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { SnippetCode } from '../components/Snippets/SnippetCode';
-import { Layout, PageHeader, Spinner, Card } from '../components/UI';
+import { Layout, PageHeader, Card } from '../components/UI';
 import { SnippetsContext } from '../store';
 import { SnippetDetails } from '../components/Snippets/SnippetDetails';
 import { SnippetDocs } from '../components/Snippets/SnippetDocs';
@@ -25,9 +25,7 @@ export const Snippet = (): JSX.Element => {
   return (
     <Layout>
       {!currentSnippet ? (
-        <div className='col-12'>
-          <Spinner />
-        </div>
+        <div className='col-12'>Loading...</div>
       ) : (
         <Fragment>
           <PageHeader title='' prevDest={from} />

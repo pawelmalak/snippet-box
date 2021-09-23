@@ -8,8 +8,23 @@ RUN npm install
 
 COPY . .
 
+RUN mkdir -p ./public ./data
+
 # Build server code
 RUN npm run build
+
+# Build client code
+RUN cd ./client \
+    && npm install --production \
+    && npm run build \
+    && cd .. \
+    && mv ./client/build/* ./public
+
+# Clean up src files
+RUN rm -rf src/ ./client \
+    && npm prune --production
+
+EXPOSE 5000
 
 ENV NODE_ENV=production
 
