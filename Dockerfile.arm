@@ -17,7 +17,7 @@ RUN npm run build
 
 # Build client code
 RUN cd ./client \
-    && npm install --production \
+    && npm install \
     && npm run build \
     && cd .. \
     && mv ./client/build/* ./public

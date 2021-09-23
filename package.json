@@ -6,7 +6,7 @@
   "scripts": {
     "init:client": "npm install --prefix=client",
     "init:server": "npm install",
-    "init": "npm-run-all -n init:**",
+    "init": "npm i && cd client && npm i",
     "dev:client": "npm start --prefix=client",
     "dev:server": "nodemon",
     "dev": "npm-run-all -n --parallel dev:**",
