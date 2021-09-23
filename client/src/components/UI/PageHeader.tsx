@@ -11,7 +11,7 @@ export const PageHeader = <T,>(props: Props<T>): JSX.Element => {
 
   return (
     <div className='col-12'>
-      <h2>{title}</h2>
+      <h4>{title}</h4>
       {prevDest && (
         <h6>
           <Link

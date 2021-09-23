@@ -34,18 +34,22 @@ export const SnippetsContextProvider = (props: Props): JSX.Element => {
 
   const history = useHistory();
 
+  const redirectOnError = () => {
+    history.push('/');
+  };
+
   const getSnippets = (): void => {
     axios
       .get<Response<Snippet[]>>('/api/snippets')
       .then(res => setSnippets(res.data.data))
-      .catch(err => console.log(err));
+      .catch(err => redirectOnError());
   };
 
   const getSnippetById = (id: number): void => {
     axios
       .get<Response<Snippet>>(`/api/snippets/${id}`)
       .then(res => setCurrentSnippet(res.data.data))
-      .catch(err => console.log(err));
+      .catch(err => redirectOnError());
   };
 
   const setSnippet = (id: number): void => {
@@ -69,9 +73,12 @@ export const SnippetsContextProvider = (props: Props): JSX.Element => {
       .then(res => {
         setSnippets([...snippets, res.data.data]);
         setCurrentSnippet(res.data.data);
-        history.push(`/snippet/${res.data.data.id}`);
+        history.push({
+          pathname: `/snippet/${res.data.data.id}`,
+          state: { from: '/snippets' }
+        });
       })
-      .catch(err => console.log(err));
+      .catch(err => redirectOnError());
   };
 
   const updateSnippet = (snippet: NewSnippet, id: number): void => {
@@ -90,7 +97,7 @@ export const SnippetsContextProvider = (props: Props): JSX.Element => {
           state: { from: '/snippets' }
         });
       })
-      .catch(err => console.log(err));
+      .catch(err => redirectOnError());
   };
 
   const deleteSnippet = (id: number): void => {
@@ -106,7 +113,7 @@ export const SnippetsContextProvider = (props: Props): JSX.Element => {
           setSnippet(-1);
           history.push('/snippets');
         })
-        .catch(err => console.log(err));
+        .catch(err => redirectOnError());
     }
   };
 
@@ -122,7 +129,7 @@ export const SnippetsContextProvider = (props: Props): JSX.Element => {
     axios
       .get<Response<LanguageCount[]>>('/api/snippets/statistics/count')
       .then(res => setLanguageCount(res.data.data))
-      .catch(err => console.log(err));
+      .catch(err => redirectOnError());
   };
 
   const context = {

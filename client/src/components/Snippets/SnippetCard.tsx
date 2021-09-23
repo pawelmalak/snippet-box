@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const SnippetCard = (props: Props): JSX.Element => {
-  const { title, description, language, code, id, updatedAt, isPinned } =
+  const { title, description, language, code, id, createdAt, isPinned } =
     props.snippet;
   const { setSnippet } = useContext(SnippetsContext);
 
@@ -21,47 +21,47 @@ export const SnippetCard = (props: Props): JSX.Element => {
   };
 
   return (
-    <Card>
+    <Card classes='h-100' bodyClasses='d-flex flex-column'>
       {/* TITLE */}
       <h5 className='card-title d-flex align-items-center justify-content-between'>
         {title}
         {isPinned ? <Icon path={mdiPin} size={0.8} color='#212529' /> : ''}
       </h5>
 
-      {/* UPDATE DATE */}
       <h6 className='card-subtitle mb-2 text-muted'>
-        {dateParser(updatedAt).relative}
+        {/* LANGUAGE */}
+        <Badge text={language} color={badgeColor(language)} />
       </h6>
 
       {/* DESCRIPTION */}
-      <p className='text-truncate'>
-        {description ? description : 'No description'}
-      </p>
+      <p>{description ? description : 'No description'}</p>
 
-      {/* LANGUAGE */}
-      <Badge text={language} color={badgeColor(language)} />
-      <hr />
+      <div className='mt-auto'>
+        {/* UPDATE DATE */}
+        <p>Created {dateParser(createdAt).relative}</p>
+        <hr />
 
-      {/* ACTIONS */}
-      <div className='d-flex justify-content-end'>
-        <Link
-          to={{
-            pathname: `/snippet/${id}`,
-            state: { from: window.location.pathname }
-          }}
-        >
-          <Button
-            text='View'
-            color='dark'
-            small
-            outline
-            classes='me-2'
-            handler={() => {
-              setSnippet(id);
+        {/* ACTIONS */}
+        <div className='d-flex justify-content-end'>
+          <Link
+            to={{
+              pathname: `/snippet/${id}`,
+              state: { from: window.location.pathname }
             }}
-          />
-        </Link>
-        <Button text='Copy code' color='dark' small handler={copyHandler} />
+          >
+            <Button
+              text='View'
+              color='dark'
+              small
+              outline
+              classes='me-2'
+              handler={() => {
+                setSnippet(id);
+              }}
+            />
+          </Link>
+          <Button text='Copy code' color='dark' small handler={copyHandler} />
+        </div>
       </div>
     </Card>
   );
