@@ -1,14 +1,7 @@
 import { useEffect, useContext, useState, Fragment } from 'react';
 import { SnippetsContext } from '../store';
 import { SnippetGrid } from '../components/Snippets/SnippetGrid';
-import {
-  Badge,
-  Button,
-  Card,
-  EmptyState,
-  Layout,
-  Spinner
-} from '../components/UI';
+import { Button, Card, EmptyState, Layout } from '../components/UI';
 import { Snippet } from '../typescript/interfaces';
 
 export const Snippets = (): JSX.Element => {
@@ -45,7 +38,13 @@ export const Snippets = (): JSX.Element => {
       ) : (
         <Fragment>
           <div className='col-12 col-md-4 col-lg-3'>
-            <Card title='Filter by language'>
+            <Card>
+              <h5 className='card-title'>All snippets</h5>
+              <div className='mb-3 d-flex justify-content-between'>
+                <span>Total</span>
+                <span>{snippets.length}</span>
+              </div>
+              <h5 className='card-title'>Filter by language</h5>
               <Fragment>
                 {languageCount.map((el, idx) => {
                   const isActiveFilter = filter === el.language;

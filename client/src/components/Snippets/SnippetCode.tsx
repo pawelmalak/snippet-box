@@ -8,7 +8,7 @@ export const SnippetCode = (props: Props): JSX.Element => {
       <textarea
         className='form-control'
         id='code'
-        rows={10}
+        rows={13}
         value={props.code}
         disabled
       ></textarea>

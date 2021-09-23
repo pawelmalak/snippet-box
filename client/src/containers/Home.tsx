@@ -1,6 +1,6 @@
 import { useEffect, useContext, Fragment } from 'react';
 import { SnippetsContext } from '../store';
-import { Layout, Spinner, PageHeader, EmptyState } from '../components/UI';
+import { Layout, PageHeader, EmptyState } from '../components/UI';
 import { SnippetGrid } from '../components/Snippets/SnippetGrid';
 
 export const Home = (): JSX.Element => {
@@ -24,13 +24,6 @@ export const Home = (): JSX.Element => {
               </div>
             </Fragment>
           )}
-
-          <PageHeader title='Recent snippets' />
-          <div className='col-12'>
-            <SnippetGrid
-              snippets={snippets.filter(s => !s.isPinned).slice(0, 6)}
-            />
-          </div>
         </Fragment>
       )}
     </Layout>
