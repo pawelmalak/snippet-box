@@ -40,13 +40,21 @@ npm run dev
 #### Building image
 
 ```sh
+# Building image for Linux
 docker build -t snippet-box .
+
+# Build image for ARM
+docker buildx build \
+  --platform linux/arm/v7,linux/arm64 \
+  -f Dockerfile.arm \
+  -t snippet-box:arm
 ```
 
 #### Deployment
 
 ```sh
 # run container
+# for ARM use snippet-box:arm tag
 docker run -p 5000:5000 -v /path/to/data:/app/data snippet-box
 ```
 
