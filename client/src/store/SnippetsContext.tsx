@@ -17,7 +17,7 @@ export const SnippetsContext = createContext<Context>({
   getSnippetById: (id: number) => {},
   setSnippet: (id: number) => {},
   createSnippet: (snippet: NewSnippet) => {},
-  updateSnippet: (snippet: NewSnippet, id: number) => {},
+  updateSnippet: (snippet: NewSnippet, id: number, isLocal?: boolean) => {},
   deleteSnippet: (id: number) => {},
   toggleSnippetPin: (id: number) => {},
   countSnippets: () => {}
@@ -81,7 +81,11 @@ export const SnippetsContextProvider = (props: Props): JSX.Element => {
       .catch(err => redirectOnError());
   };
 
-  const updateSnippet = (snippet: NewSnippet, id: number): void => {
+  const updateSnippet = (
+    snippet: NewSnippet,
+    id: number,
+    isLocal?: boolean
+  ): void => {
     axios
       .put<Response<Snippet>>(`/api/snippets/${id}`, snippet)
       .then(res => {
@@ -92,10 +96,13 @@ export const SnippetsContextProvider = (props: Props): JSX.Element => {
           ...snippets.slice(oldSnippetIdx + 1)
         ]);
         setCurrentSnippet(res.data.data);
-        history.push({
-          pathname: `/snippet/${res.data.data.id}`,
-          state: { from: '/snippets' }
-        });
+
+        if (!isLocal) {
+          history.push({
+            pathname: `/snippet/${res.data.data.id}`,
+            state: { from: '/snippets' }
+          });
+        }
       })
       .catch(err => redirectOnError());
   };
@@ -121,7 +128,7 @@ export const SnippetsContextProvider = (props: Props): JSX.Element => {
     const snippet = snippets.find(s => s.id === id);
 
     if (snippet) {
-      updateSnippet({ ...snippet, isPinned: !snippet.isPinned }, id);
+      updateSnippet({ ...snippet, isPinned: !snippet.isPinned }, id, true);
     }
   };
 

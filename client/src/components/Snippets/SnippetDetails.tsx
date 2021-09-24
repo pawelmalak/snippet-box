@@ -1,12 +1,11 @@
 import { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { SnippetsContext } from '../../store';
 import { Snippet } from '../../typescript/interfaces';
 import { dateParser } from '../../utils';
 import { Button, Card } from '../UI';
-import Icon from '@mdi/react';
-import { mdiPin } from '@mdi/js';
 import copy from 'clipboard-copy';
+import { SnippetPin } from './SnippetPin';
 
 interface Props {
   snippet: Snippet;
@@ -24,8 +23,9 @@ export const SnippetDetails = (props: Props): JSX.Element => {
     isPinned
   } = props.snippet;
 
-  const { deleteSnippet, toggleSnippetPin, setSnippet } =
-    useContext(SnippetsContext);
+  const history = useHistory();
+
+  const { deleteSnippet, setSnippet } = useContext(SnippetsContext);
 
   const creationDate = dateParser(createdAt);
   const updateDate = dateParser(updatedAt);
@@ -38,7 +38,7 @@ export const SnippetDetails = (props: Props): JSX.Element => {
     <Card>
       <h5 className='card-title d-flex align-items-center justify-content-between'>
         {title}
-        {isPinned ? <Icon path={mdiPin} size={0.8} color='#212529' /> : ''}
+        <SnippetPin id={id} isPinned={isPinned} />
       </h5>
       <p>{description}</p>
 
@@ -59,33 +59,22 @@ export const SnippetDetails = (props: Props): JSX.Element => {
         <span>Last updated</span>
         <span>{updateDate.relative}</span>
       </div>
-
       <hr />
 
       {/* ACTIONS */}
-      <div className='d-flex justify-content-between'>
-        <Link
-          to={{
-            pathname: `/editor/${id}`,
-            state: { from: window.location.pathname }
-          }}
-        >
-          <Button
-            text='Edit'
-            color='dark'
-            small
-            outline
-            classes='me-3'
-            handler={() => setSnippet(id)}
-          />
-        </Link>
+      <div className='d-grid g-2' style={{ rowGap: '10px' }}>
         <Button
-          text={`${isPinned ? 'Unpin snippet' : 'Pin snippet'}`}
+          text='Edit'
           color='dark'
           small
           outline
-          handler={() => toggleSnippetPin(id)}
-          classes='me-3'
+          handler={() => {
+            setSnippet(id);
+            history.push({
+              pathname: `/editor/${id}`,
+              state: { from: window.location.pathname }
+            });
+          }}
         />
         <Button
           text='Delete'
@@ -94,12 +83,6 @@ export const SnippetDetails = (props: Props): JSX.Element => {
           outline
           handler={() => deleteSnippet(id)}
         />
-      </div>
-
-      <hr />
-
-      {/* COPY */}
-      <div className='d-grid'>
         <Button text='Copy code' color='dark' small handler={copyHandler} />
       </div>
     </Card>
