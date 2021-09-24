@@ -6,6 +6,7 @@ import { dateParser } from '../../utils';
 import { Button, Card } from '../UI';
 import Icon from '@mdi/react';
 import { mdiPin } from '@mdi/js';
+import copy from 'clipboard-copy';
 
 interface Props {
   snippet: Snippet;
@@ -30,7 +31,7 @@ export const SnippetDetails = (props: Props): JSX.Element => {
   const updateDate = dateParser(updatedAt);
 
   const copyHandler = () => {
-    navigator.clipboard.writeText(code);
+    copy(code);
   };
 
   return (

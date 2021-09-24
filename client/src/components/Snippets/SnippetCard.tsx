@@ -6,6 +6,7 @@ import { Badge, Button, Card } from '../UI';
 import { SnippetsContext } from '../../store';
 import Icon from '@mdi/react';
 import { mdiPin } from '@mdi/js';
+import copy from 'clipboard-copy';
 
 interface Props {
   snippet: Snippet;
@@ -17,7 +18,7 @@ export const SnippetCard = (props: Props): JSX.Element => {
   const { setSnippet } = useContext(SnippetsContext);
 
   const copyHandler = () => {
-    navigator.clipboard.writeText(code);
+    copy(code);
   };
 
   return (
