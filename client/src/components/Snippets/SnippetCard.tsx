@@ -4,8 +4,8 @@ import { Snippet } from '../../typescript/interfaces';
 import { dateParser, badgeColor } from '../../utils';
 import { Badge, Button, Card } from '../UI';
 import { SnippetsContext } from '../../store';
-import Icon from '@mdi/react';
-import { mdiPin } from '@mdi/js';
+import copy from 'clipboard-copy';
+import { SnippetPin } from './SnippetPin';
 
 interface Props {
   snippet: Snippet;
@@ -17,7 +17,7 @@ export const SnippetCard = (props: Props): JSX.Element => {
   const { setSnippet } = useContext(SnippetsContext);
 
   const copyHandler = () => {
-    navigator.clipboard.writeText(code);
+    copy(code);
   };
 
   return (
@@ -25,7 +25,7 @@ export const SnippetCard = (props: Props): JSX.Element => {
       {/* TITLE */}
       <h5 className='card-title d-flex align-items-center justify-content-between'>
         {title}
-        {isPinned ? <Icon path={mdiPin} size={0.8} color='#212529' /> : ''}
+        <SnippetPin id={id} isPinned={isPinned} />
       </h5>
 
       <h6 className='card-subtitle mb-2 text-muted'>
