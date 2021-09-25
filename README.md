@@ -37,6 +37,10 @@ npm run dev
 
 ### With Docker
 
+#### Docker Hub
+[Docker Hub image link](https://hub.docker.com/r/pawelmalak/snippet-box).
+For arm platforms use `:arm` tag.
+
 #### Building image
 
 ```sh
@@ -77,7 +81,7 @@ docker run -p 5000:5000 -v /path/to/data:/app/data snippet-box
 
 ![Snippet screenshot](./.github/img/snippet.png)
 
-- Edditor
+- Editor
   - Create and edit your snippets from simple and easy to use editor
 
 ![Editor screenshot](./.github/img/editor.png)
