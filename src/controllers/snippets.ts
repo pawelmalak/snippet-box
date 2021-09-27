@@ -2,8 +2,10 @@ import { Request, Response, NextFunction } from 'express';
 import { QueryTypes } from 'sequelize';
 import { sequelize } from '../db';
 import { asyncWrapper } from '../middleware';
-import { SnippetModel } from '../models';
-import { ErrorResponse, tagsParser } from '../utils';
+import { SnippetInstance, SnippetModel } from '../models';
+import { ErrorResponse, getTags, tagsParser, Logger } from '../utils';
+
+const logger = new Logger('snippets-controller');
 
 /**
  * @description Create new snippet
@@ -37,7 +39,22 @@ export const createSnippet = asyncWrapper(
  */
 export const getAllSnippets = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const snippets = await SnippetModel.findAll();
+    const snippets = await SnippetModel.findAll({
+      raw: true
+    });
+
+    await new Promise<void>(async resolve => {
+      try {
+        for await (let snippet of snippets) {
+          const tags = await getTags(+snippet.id);
+          snippet.tags = tags;
+        }
+      } catch (err) {
+        logger.log('Error while fetching tags');
+      } finally {
+        resolve();
+      }
+    });
 
     res.status(200).json({
       data: snippets
@@ -46,14 +63,15 @@ export const getAllSnippets = asyncWrapper(
 );
 
 /**
- * @description Get single sinppet by id
+ * @description Get single snippet by id
  * @route /api/snippets/:id
  * @request GET
  */
 export const getSnippet = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const snippet = await SnippetModel.findOne({
-      where: { id: req.params.id }
+      where: { id: req.params.id },
+      raw: true
     });
 
     if (!snippet) {
@@ -64,6 +82,9 @@ export const getSnippet = asyncWrapper(
         )
       );
     }
+
+    const tags = await getTags(+req.params.id);
+    snippet.tags = tags;
 
     res.status(200).json({
       data: snippet
@@ -144,19 +165,20 @@ export const deleteSnippet = asyncWrapper(
 );
 
 /**
- * @description Count snippets by language
+ * @description Count tags
  * @route /api/snippets/statistics/count
  * @request GET
  */
-export const countSnippets = asyncWrapper(
+export const countTags = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const result = await sequelize.query(
       `SELECT
-        COUNT(language) AS count,
-        language
-      FROM snippets
-      GROUP BY language
-      ORDER BY language ASC`,
+        COUNT(tags.name) as count,
+        tags.name
+      FROM snippets_tags
+      INNER JOIN tags ON snippets_tags.tag_id = tags.id
+      GROUP BY tags.name
+      ORDER BY name ASC`,
       {
         type: QueryTypes.SELECT
       }

@@ -5,14 +5,14 @@ import {
   Context,
   Snippet,
   Response,
-  LanguageCount,
+  TagCount,
   NewSnippet
 } from '../typescript/interfaces';
 
 export const SnippetsContext = createContext<Context>({
   snippets: [],
   currentSnippet: null,
-  languageCount: [],
+  tagCount: [],
   getSnippets: () => {},
   getSnippetById: (id: number) => {},
   setSnippet: (id: number) => {},
@@ -20,7 +20,7 @@ export const SnippetsContext = createContext<Context>({
   updateSnippet: (snippet: NewSnippet, id: number, isLocal?: boolean) => {},
   deleteSnippet: (id: number) => {},
   toggleSnippetPin: (id: number) => {},
-  countSnippets: () => {}
+  countTags: () => {}
 });
 
 interface Props {
@@ -30,7 +30,7 @@ interface Props {
 export const SnippetsContextProvider = (props: Props): JSX.Element => {
   const [snippets, setSnippets] = useState<Snippet[]>([]);
   const [currentSnippet, setCurrentSnippet] = useState<Snippet | null>(null);
-  const [languageCount, setLanguageCount] = useState<LanguageCount[]>([]);
+  const [tagCount, setTagCount] = useState<TagCount[]>([]);
 
   const history = useHistory();
 
@@ -132,17 +132,17 @@ export const SnippetsContextProvider = (props: Props): JSX.Element => {
     }
   };
 
-  const countSnippets = (): void => {
+  const countTags = (): void => {
     axios
-      .get<Response<LanguageCount[]>>('/api/snippets/statistics/count')
-      .then(res => setLanguageCount(res.data.data))
+      .get<Response<TagCount[]>>('/api/snippets/statistics/count')
+      .then(res => setTagCount(res.data.data))
       .catch(err => redirectOnError());
   };
 
   const context = {
     snippets,
     currentSnippet,
-    languageCount,
+    tagCount,
     getSnippets,
     getSnippetById,
     setSnippet,
@@ -150,7 +150,7 @@ export const SnippetsContextProvider = (props: Props): JSX.Element => {
     updateSnippet,
     deleteSnippet,
     toggleSnippetPin,
-    countSnippets
+    countTags
   };
 
   return (

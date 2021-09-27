@@ -5,7 +5,7 @@ import { Button, Card, EmptyState, Layout } from '../components/UI';
 import { Snippet } from '../typescript/interfaces';
 
 export const Snippets = (): JSX.Element => {
-  const { snippets, languageCount, getSnippets, countSnippets } =
+  const { snippets, tagCount, getSnippets, countTags } =
     useContext(SnippetsContext);
 
   const [filter, setFilter] = useState<string | null>(null);
@@ -13,16 +13,16 @@ export const Snippets = (): JSX.Element => {
 
   useEffect(() => {
     getSnippets();
-    countSnippets();
+    countTags();
   }, []);
 
   useEffect(() => {
     setLocalSnippets([...snippets]);
   }, [snippets]);
 
-  const filterHandler = (language: string) => {
-    setFilter(language);
-    const filteredSnippets = snippets.filter(s => s.language === language);
+  const filterHandler = (tag: string) => {
+    setFilter(tag);
+    const filteredSnippets = snippets.filter(s => s.tags.includes(tag));
     setLocalSnippets(filteredSnippets);
   };
 
@@ -44,21 +44,21 @@ export const Snippets = (): JSX.Element => {
                 <span>Total</span>
                 <span>{snippets.length}</span>
               </div>
-              <h5 className='card-title'>Filter by language</h5>
+              <h5 className='card-title'>Filter by tags</h5>
               <Fragment>
-                {languageCount.map((el, idx) => {
-                  const isActiveFilter = filter === el.language;
+                {tagCount.map((tag, idx) => {
+                  const isActiveFilter = filter === tag.name;
 
                   return (
                     <div
+                      key={idx}
                       className={`d-flex justify-content-between cursor-pointer ${
                         isActiveFilter && 'text-dark fw-bold'
                       }`}
-                      key={idx}
-                      onClick={() => filterHandler(el.language)}
+                      onClick={() => filterHandler(tag.name)}
                     >
-                      <span>{el.language}</span>
-                      <span>{el.count}</span>
+                      <span>{tag.name}</span>
+                      <span>{tag.count}</span>
                     </div>
                   );
                 })}

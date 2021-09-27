@@ -76,7 +76,6 @@ export const up = async (queryInterface: QueryInterface): Promise<void> => {
         }
       } catch (err) {
         logger.log('Error while assigning tags to snippets');
-        console.log(err);
       } finally {
         resolve();
       }
