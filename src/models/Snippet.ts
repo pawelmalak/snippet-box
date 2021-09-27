@@ -41,6 +41,11 @@ export const SnippetModel = sequelize.define<SnippetInstance>('Snippet', {
     allowNull: true,
     defaultValue: 0
   },
+  tags: {
+    type: STRING,
+    allowNull: true,
+    defaultValue: ''
+  },
   createdAt: {
     type: DATE
   },

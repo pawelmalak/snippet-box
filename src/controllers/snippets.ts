@@ -3,7 +3,7 @@ import { QueryTypes } from 'sequelize';
 import { sequelize } from '../db';
 import { asyncWrapper } from '../middleware';
 import { SnippetModel } from '../models';
-import { ErrorResponse } from '../utils';
+import { ErrorResponse, tagsParser } from '../utils';
 
 /**
  * @description Create new snippet
@@ -12,7 +12,17 @@ import { ErrorResponse } from '../utils';
  */
 export const createSnippet = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const snippet = await SnippetModel.create(req.body);
+    const { language, tags } = <{ language: string; tags: string }>req.body;
+    const parsedTags = tagsParser(tags);
+
+    if (!parsedTags.includes(language.toLowerCase())) {
+      parsedTags.push(language.toLowerCase());
+    }
+
+    const snippet = await SnippetModel.create({
+      ...req.body,
+      tags: parsedTags.join(',')
+    });
 
     res.status(201).json({
       data: snippet
@@ -81,7 +91,23 @@ export const updateSnippet = asyncWrapper(
       );
     }
 
-    snippet = await snippet.update(req.body);
+    // Check if language was changed. Edit tags if so
+    const { language: oldLanguage } = snippet;
+    const { language, tags } = <{ language: string; tags: string }>req.body;
+    let parsedTags = tagsParser(tags);
+
+    if (oldLanguage != language) {
+      parsedTags = parsedTags.filter(tag => tag != oldLanguage);
+
+      if (!parsedTags.includes(language)) {
+        parsedTags.push(language.toLowerCase());
+      }
+    }
+
+    snippet = await snippet.update({
+      ...req.body,
+      tags: parsedTags.join(',')
+    });
 
     res.status(200).json({
       data: snippet

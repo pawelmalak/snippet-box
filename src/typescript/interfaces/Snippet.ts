@@ -8,6 +8,7 @@ export interface Snippet extends Model {
   code: string;
   docs: string;
   isPinned: number;
+  tags: string;
 }
 
 export interface SnippetCreationAttributes

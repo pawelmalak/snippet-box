@@ -25,7 +25,8 @@ export const SnippetForm = (props: Props): JSX.Element => {
     language: '',
     code: '',
     docs: '',
-    isPinned: false
+    isPinned: false,
+    tags: ''
   });
 
   useEffect(() => {
@@ -109,10 +110,30 @@ export const SnippetForm = (props: Props): JSX.Element => {
                 id='language'
                 name='language'
                 value={formData.language}
-                placeholder='bash'
+                placeholder='python'
                 required
                 onChange={e => inputHandler(e)}
               />
+            </div>
+
+            {/* TAGS */}
+            <div className='mb-3'>
+              <label htmlFor='tags' className='form-label'>
+                Tags
+              </label>
+              <input
+                type='text'
+                className='form-control'
+                id='tags'
+                name='tags'
+                value={formData.tags}
+                placeholder='automation, files, loop'
+                required
+                onChange={e => inputHandler(e)}
+              />
+              <div className='form-text'>
+                Language tag will be added automatically
+              </div>
             </div>
             <hr />
 
