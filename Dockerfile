@@ -10,14 +10,8 @@ COPY . .
 
 RUN mkdir -p ./public ./data
 
-# Build server code
-RUN npm run build
-
-# Build client code
-RUN cd ./client \
-    && npm install \
-    && npm run build \
-    && cd .. \
+# Build 
+RUN npm run build \
     && mv ./client/build/* ./public
 
 # Clean up src files

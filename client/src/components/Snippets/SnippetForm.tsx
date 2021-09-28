@@ -54,6 +54,10 @@ export const SnippetForm = (props: Props): JSX.Element => {
     });
   };
 
+  const tagsToString = (): string => {
+    return formData.tags.join(',');
+  };
+
   const formHandler = (e: FormEvent) => {
     e.preventDefault();
 
@@ -134,13 +138,13 @@ export const SnippetForm = (props: Props): JSX.Element => {
                 className='form-control'
                 id='tags'
                 name='tags'
-                // value={formData.tags}
+                value={tagsToString()}
                 placeholder='automation, files, loop'
                 onChange={e => stringToTags(e)}
               />
               <div className='form-text'>
-                Tags should be separate with a comma. Language tag will be added
-                automatically
+                Tags should be separated with a comma. Language tag will be
+                added automatically
               </div>
             </div>
             <hr />

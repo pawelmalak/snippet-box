@@ -53,12 +53,12 @@ export const SnippetsContextProvider = (props: Props): JSX.Element => {
   };
 
   const setSnippet = (id: number): void => {
-    getSnippetById(id);
-
     if (id < 0) {
       setCurrentSnippet(null);
       return;
     }
+
+    getSnippetById(id);
 
     const snippet = snippets.find(s => s.id === id);
 

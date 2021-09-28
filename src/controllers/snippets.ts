@@ -2,13 +2,15 @@ import { Request, Response, NextFunction } from 'express';
 import { QueryTypes } from 'sequelize';
 import { sequelize } from '../db';
 import { asyncWrapper } from '../middleware';
+import { SnippetModel, Snippet_TagModel } from '../models';
 import {
-  SnippetInstance,
-  SnippetModel,
-  Snippet_TagModel,
-  TagModel
-} from '../models';
-import { ErrorResponse, getTags, tagParser, Logger } from '../utils';
+  ErrorResponse,
+  getTags,
+  tagParser,
+  Logger,
+  createTags
+} from '../utils';
+import { Body } from '../typescript/interfaces';
 
 const logger = new Logger('snippets-controller');
 
@@ -19,11 +21,6 @@ const logger = new Logger('snippets-controller');
  */
 export const createSnippet = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    interface Body {
-      language: string;
-      tags: string[];
-    }
-
     // Get tags from request body
     const { language, tags: requestTags } = <Body>req.body;
     const parsedRequestTags = tagParser([
@@ -37,38 +34,8 @@ export const createSnippet = asyncWrapper(
       tags: [...parsedRequestTags].join(',')
     });
 
-    // Get all tags
-    const rawAllTags = await sequelize.query<{ id: number; name: string }>(
-      `SELECT * FROM tags`,
-      { type: QueryTypes.SELECT }
-    );
-
-    const parsedAllTags = rawAllTags.map(tag => tag.name);
-
-    // Create array of new tags
-    const newTags = [...parsedRequestTags].filter(
-      tag => !parsedAllTags.includes(tag)
-    );
-
-    // Create new tags
-    if (newTags.length > 0) {
-      for (const tag of newTags) {
-        const { id, name } = await TagModel.create({ name: tag });
-        rawAllTags.push({ id, name });
-      }
-    }
-
-    // Associate tags with snippet
-    for (const tag of parsedRequestTags) {
-      const tagObj = rawAllTags.find(t => t.name == tag);
-
-      if (tagObj) {
-        await Snippet_TagModel.create({
-          snippet_id: snippet.id,
-          tag_id: tagObj.id
-        });
-      }
-    }
+    // Create tags
+    await createTags(parsedRequestTags, snippet.id);
 
     // Get raw snippet values
     const rawSnippet = snippet.get({ plain: true });
@@ -162,10 +129,28 @@ export const updateSnippet = asyncWrapper(
       );
     }
 
-    snippet = await snippet.update(req.body);
+    // Get tags from request body
+    const { language, tags: requestTags } = <Body>req.body;
+    let parsedRequestTags = tagParser([...requestTags, language.toLowerCase()]);
+
+    // Update snippet
+    snippet = await snippet.update({
+      ...req.body,
+      tags: [...parsedRequestTags].join(',')
+    });
+
+    // Delete old tags and create new ones
+    await Snippet_TagModel.destroy({ where: { snippet_id: req.params.id } });
+    await createTags(parsedRequestTags, snippet.id);
+
+    // Get raw snippet values
+    const rawSnippet = snippet.get({ plain: true });
 
     res.status(200).json({
-      data: snippet
+      data: {
+        ...rawSnippet,
+        tags: [...parsedRequestTags]
+      }
     });
   }
 );
