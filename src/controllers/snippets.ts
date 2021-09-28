@@ -2,8 +2,13 @@ import { Request, Response, NextFunction } from 'express';
 import { QueryTypes } from 'sequelize';
 import { sequelize } from '../db';
 import { asyncWrapper } from '../middleware';
-import { SnippetInstance, SnippetModel } from '../models';
-import { ErrorResponse, getTags, tagsParser, Logger } from '../utils';
+import {
+  SnippetInstance,
+  SnippetModel,
+  Snippet_TagModel,
+  TagModel
+} from '../models';
+import { ErrorResponse, getTags, tagParser, Logger } from '../utils';
 
 const logger = new Logger('snippets-controller');
 
@@ -14,20 +19,65 @@ const logger = new Logger('snippets-controller');
  */
 export const createSnippet = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const { language, tags } = <{ language: string; tags: string }>req.body;
-    const parsedTags = tagsParser(tags);
-
-    if (!parsedTags.includes(language.toLowerCase())) {
-      parsedTags.push(language.toLowerCase());
+    interface Body {
+      language: string;
+      tags: string[];
     }
 
+    // Get tags from request body
+    const { language, tags: requestTags } = <Body>req.body;
+    const parsedRequestTags = tagParser([
+      ...requestTags,
+      language.toLowerCase()
+    ]);
+
+    // Create snippet
     const snippet = await SnippetModel.create({
       ...req.body,
-      tags: parsedTags.join(',')
+      tags: [...parsedRequestTags].join(',')
     });
 
+    // Get all tags
+    const rawAllTags = await sequelize.query<{ id: number; name: string }>(
+      `SELECT * FROM tags`,
+      { type: QueryTypes.SELECT }
+    );
+
+    const parsedAllTags = rawAllTags.map(tag => tag.name);
+
+    // Create array of new tags
+    const newTags = [...parsedRequestTags].filter(
+      tag => !parsedAllTags.includes(tag)
+    );
+
+    // Create new tags
+    if (newTags.length > 0) {
+      for (const tag of newTags) {
+        const { id, name } = await TagModel.create({ name: tag });
+        rawAllTags.push({ id, name });
+      }
+    }
+
+    // Associate tags with snippet
+    for (const tag of parsedRequestTags) {
+      const tagObj = rawAllTags.find(t => t.name == tag);
+
+      if (tagObj) {
+        await Snippet_TagModel.create({
+          snippet_id: snippet.id,
+          tag_id: tagObj.id
+        });
+      }
+    }
+
+    // Get raw snippet values
+    const rawSnippet = snippet.get({ plain: true });
+
     res.status(201).json({
-      data: snippet
+      data: {
+        ...rawSnippet,
+        tags: [...parsedRequestTags]
+      }
     });
   }
 );
@@ -50,7 +100,7 @@ export const getAllSnippets = asyncWrapper(
           snippet.tags = tags;
         }
       } catch (err) {
-        logger.log('Error while fetching tags');
+        logger.log('Error while fetching tags', 'ERROR');
       } finally {
         resolve();
       }
@@ -112,23 +162,7 @@ export const updateSnippet = asyncWrapper(
       );
     }
 
-    // Check if language was changed. Edit tags if so
-    const { language: oldLanguage } = snippet;
-    const { language, tags } = <{ language: string; tags: string }>req.body;
-    let parsedTags = tagsParser(tags);
-
-    if (oldLanguage != language) {
-      parsedTags = parsedTags.filter(tag => tag != oldLanguage);
-
-      if (!parsedTags.includes(language)) {
-        parsedTags.push(language.toLowerCase());
-      }
-    }
-
-    snippet = await snippet.update({
-      ...req.body,
-      tags: parsedTags.join(',')
-    });
+    snippet = await snippet.update(req.body);
 
     res.status(200).json({
       data: snippet
@@ -156,6 +190,7 @@ export const deleteSnippet = asyncWrapper(
       );
     }
 
+    await Snippet_TagModel.destroy({ where: { snippet_id: req.params.id } });
     await snippet.destroy();
 
     res.status(200).json({

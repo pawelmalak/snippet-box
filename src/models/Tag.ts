@@ -16,7 +16,8 @@ export const TagModel = sequelize.define<TagInstance>(
     },
     name: {
       type: STRING,
-      allowNull: false
+      allowNull: false,
+      unique: true
     }
   },
   {

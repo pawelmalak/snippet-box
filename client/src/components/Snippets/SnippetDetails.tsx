@@ -64,8 +64,8 @@ export const SnippetDetails = (props: Props): JSX.Element => {
 
       {/* TAGS */}
       <div>
-        {tags.map(tag => (
-          <span className='me-2'>
+        {tags.map((tag, idx) => (
+          <span className='me-2' key={idx}>
             <Badge text={tag} color='dark' />
           </span>
         ))}
