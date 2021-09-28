@@ -25,7 +25,8 @@ export const SnippetForm = (props: Props): JSX.Element => {
     language: '',
     code: '',
     docs: '',
-    isPinned: false
+    isPinned: false,
+    tags: []
   });
 
   useEffect(() => {
@@ -43,6 +44,18 @@ export const SnippetForm = (props: Props): JSX.Element => {
       ...formData,
       [e.target.name]: e.target.value
     });
+  };
+
+  const stringToTags = (e: ChangeEvent<HTMLInputElement>) => {
+    const tags = e.target.value.split(',');
+    setFormData({
+      ...formData,
+      tags
+    });
+  };
+
+  const tagsToString = (): string => {
+    return formData.tags.join(',');
   };
 
   const formHandler = (e: FormEvent) => {
@@ -109,10 +122,30 @@ export const SnippetForm = (props: Props): JSX.Element => {
                 id='language'
                 name='language'
                 value={formData.language}
-                placeholder='bash'
+                placeholder='python'
                 required
                 onChange={e => inputHandler(e)}
               />
+            </div>
+
+            {/* TAGS */}
+            <div className='mb-3'>
+              <label htmlFor='tags' className='form-label'>
+                Tags
+              </label>
+              <input
+                type='text'
+                className='form-control'
+                id='tags'
+                name='tags'
+                value={tagsToString()}
+                placeholder='automation, files, loop'
+                onChange={e => stringToTags(e)}
+              />
+              <div className='form-text'>
+                Tags should be separated with a comma. Language tag will be
+                added automatically
+              </div>
             </div>
             <hr />
 

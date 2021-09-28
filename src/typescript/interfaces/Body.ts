@@ -1,6 +1,4 @@
-import { Model } from '.';
-
-export interface NewSnippet {
+export interface Body {
   title: string;
   description?: string;
   language: string;
@@ -9,5 +7,3 @@ export interface NewSnippet {
   isPinned: boolean;
   tags: string[];
 }
-
-export interface Snippet extends Model, NewSnippet {}

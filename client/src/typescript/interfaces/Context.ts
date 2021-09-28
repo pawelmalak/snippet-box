@@ -1,9 +1,9 @@
-import { LanguageCount, NewSnippet, Snippet } from '.';
+import { TagCount, NewSnippet, Snippet } from '.';
 
 export interface Context {
   snippets: Snippet[];
   currentSnippet: Snippet | null;
-  languageCount: LanguageCount[];
+  tagCount: TagCount[];
   getSnippets: () => void;
   getSnippetById: (id: number) => void;
   setSnippet: (id: number) => void;
@@ -11,5 +11,5 @@ export interface Context {
   updateSnippet: (snippet: NewSnippet, id: number, isLocal?: boolean) => void;
   deleteSnippet: (id: number) => void;
   toggleSnippetPin: (id: number) => void;
-  countSnippets: () => void;
+  countTags: () => void;
 }

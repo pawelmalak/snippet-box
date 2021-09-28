@@ -1,4 +1,4 @@
-export interface LanguageCount {
+export interface TagCount {
   count: number;
-  language: string;
+  name: string;
 }

@@ -10,6 +10,7 @@
     "dev:client": "npm start --prefix=client",
     "dev:server": "nodemon",
     "dev": "npm-run-all -n --parallel dev:**",
+    "build:client": "npm run build --prefix=client",
     "build:clear": "rm -rf build",
     "build:tsc": "tsc",
     "build": "npm-run-all -n build:**"

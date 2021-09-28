@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { SnippetsContext } from '../../store';
 import { Snippet } from '../../typescript/interfaces';
 import { dateParser } from '../../utils';
-import { Button, Card } from '../UI';
+import { Badge, Button, Card } from '../UI';
 import copy from 'clipboard-copy';
 import { SnippetPin } from './SnippetPin';
 
@@ -15,6 +15,7 @@ export const SnippetDetails = (props: Props): JSX.Element => {
   const {
     title,
     language,
+    tags,
     createdAt,
     updatedAt,
     description,
@@ -58,6 +59,16 @@ export const SnippetDetails = (props: Props): JSX.Element => {
       <div className={`d-flex justify-content-between`}>
         <span>Last updated</span>
         <span>{updateDate.relative}</span>
+      </div>
+      <hr />
+
+      {/* TAGS */}
+      <div>
+        {tags.map((tag, idx) => (
+          <span className='me-2' key={idx}>
+            <Badge text={tag} color='dark' />
+          </span>
+        ))}
       </div>
       <hr />
 

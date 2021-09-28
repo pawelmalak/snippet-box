@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import {
-  countSnippets,
+  countTags,
   createSnippet,
   deleteSnippet,
   getAllSnippets,
@@ -22,4 +22,4 @@ snippetRouter
   .put(updateSnippet)
   .delete(deleteSnippet);
 
-snippetRouter.route('/statistics/count').get(countSnippets);
+snippetRouter.route('/statistics/count').get(countTags);
