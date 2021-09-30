@@ -31,7 +31,10 @@ export const Snippet = (): JSX.Element => {
           <PageHeader title='' prevDest={from} />
           <div className='row mt-3'>
             <div className='col-12 col-md-7 col-lg-8'>
-              <SnippetCode code={currentSnippet.code} />
+              <SnippetCode
+                code={currentSnippet.code}
+                language={currentSnippet.language}
+              />
             </div>
             <div className='col-12 col-md-5 col-lg-4'>
               <SnippetDetails snippet={currentSnippet} />
