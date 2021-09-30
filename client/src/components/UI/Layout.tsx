@@ -5,7 +5,7 @@ interface Props {
 export const Layout = (props: Props): JSX.Element => {
   return (
     <div className='container-lg px-5'>
-      <div className='row pt-4'>{props.children}</div>
+      <div className='row py-4'>{props.children}</div>
     </div>
   );
 };

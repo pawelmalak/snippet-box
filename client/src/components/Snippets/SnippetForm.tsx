@@ -183,7 +183,7 @@ export const SnippetForm = (props: Props): JSX.Element => {
             <div className='d-grid'>
               <Button
                 text={`${inEdit ? 'Update snippet' : 'Create snippet'}`}
-                color='dark'
+                color='secondary'
                 type='submit'
               />
             </div>

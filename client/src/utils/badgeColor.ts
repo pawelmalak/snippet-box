@@ -22,7 +22,7 @@ export const badgeColor = (language: string): Color => {
       color = 'danger';
       break;
     case 5:
-      color = 'dark';
+      color = 'light';
       break;
   }
 

@@ -19,7 +19,7 @@ export const Home = (): JSX.Element => {
           {snippets.some(s => s.isPinned) && (
             <Fragment>
               <PageHeader title='Pinned snippets' />
-              <div className='col-12 mb-3'>
+              <div className='col-12 mt-3'>
                 <SnippetGrid snippets={snippets.filter(s => s.isPinned)} />
               </div>
             </Fragment>

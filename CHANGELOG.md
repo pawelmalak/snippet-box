@@ -1,3 +1,7 @@
+### v1.3 (2021-09-30)
+- Added dark mode ([#7](https://github.com/pawelmalak/snippet-box/issues/7))
+- Added syntax highlighting ([#14](https://github.com/pawelmalak/snippet-box/issues/14))
+
 ### v1.2 (2021-09-28)
 - Added support for tags ([#10](https://github.com/pawelmalak/snippet-box/issues/10))
 

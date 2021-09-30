@@ -44,6 +44,8 @@ export const Snippets = (): JSX.Element => {
                 <span>Total</span>
                 <span>{snippets.length}</span>
               </div>
+              <hr />
+
               <h5 className='card-title'>Filter by tags</h5>
               <Fragment>
                 {tagCount.map((tag, idx) => {
@@ -53,7 +55,7 @@ export const Snippets = (): JSX.Element => {
                     <div
                       key={idx}
                       className={`d-flex justify-content-between cursor-pointer ${
-                        isActiveFilter && 'text-dark fw-bold'
+                        isActiveFilter && 'text-success'
                       }`}
                       onClick={() => filterHandler(tag.name)}
                     >
@@ -66,7 +68,7 @@ export const Snippets = (): JSX.Element => {
               <div className='d-grid mt-3'>
                 <Button
                   text='Clear filters'
-                  color='dark'
+                  color='secondary'
                   small
                   outline
                   handler={clearFilterHandler}
