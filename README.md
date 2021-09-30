@@ -10,6 +10,7 @@ Snippet Box is a simple self-hosted app for organizing your code snippets. It al
 
 - Backend
   - Node.js
+  - Typescript
   - Express.js
   - Sequelize ORM + SQLite
 - Frontend
