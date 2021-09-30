@@ -38,6 +38,7 @@ npm run dev
 ### With Docker
 
 #### Docker Hub
+
 [Docker Hub image link](https://hub.docker.com/r/pawelmalak/snippet-box).
 For arm platforms use `:arm` tag.
 
@@ -51,7 +52,7 @@ docker build -t snippet-box .
 docker buildx build \
   --platform linux/arm/v7,linux/arm64 \
   -f Dockerfile.arm \
-  -t snippet-box:arm
+  -t snippet-box:arm .
 ```
 
 #### Deployment
@@ -62,6 +63,10 @@ docker buildx build \
 docker run -p 5000:5000 -v /path/to/data:/app/data snippet-box
 ```
 
+### Without Docker
+
+Follow instructions from wiki - [Installation without Docker](https://github.com/pawelmalak/snippet-box/wiki/Installation-without-Docker)
+
 ## Functionality
 
 - Pinned snippets
@@ -71,12 +76,13 @@ docker run -p 5000:5000 -v /path/to/data:/app/data snippet-box
 
 - Snippet library
   - Manage your snippets through snippet library
-  - Easily filter and access your code
+  - Easily filter and access your code using tags
 
 ![Snippet library screenshot](./.github/img/snippets.png)
 
 - Snippet
   - View your code, snippet details and documentation
+  - Built-in syntax highlighting
   - Easily perform snippet actions like edit, pin or delete from a single place
 
 ![Snippet screenshot](./.github/img/snippet.png)
