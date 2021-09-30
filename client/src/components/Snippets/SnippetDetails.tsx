@@ -66,7 +66,7 @@ export const SnippetDetails = (props: Props): JSX.Element => {
       <div>
         {tags.map((tag, idx) => (
           <span className='me-2' key={idx}>
-            <Badge text={tag} color='dark' />
+            <Badge text={tag} color='light' />
           </span>
         ))}
       </div>
@@ -76,7 +76,7 @@ export const SnippetDetails = (props: Props): JSX.Element => {
       <div className='d-grid g-2' style={{ rowGap: '10px' }}>
         <Button
           text='Edit'
-          color='dark'
+          color='secondary'
           small
           outline
           handler={() => {
@@ -94,7 +94,12 @@ export const SnippetDetails = (props: Props): JSX.Element => {
           outline
           handler={() => deleteSnippet(id)}
         />
-        <Button text='Copy code' color='dark' small handler={copyHandler} />
+        <Button
+          text='Copy code'
+          color='secondary'
+          small
+          handler={copyHandler}
+        />
       </div>
     </Card>
   );

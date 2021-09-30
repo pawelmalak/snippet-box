@@ -19,7 +19,7 @@ export const PageHeader = <T,>(props: Props<T>): JSX.Element => {
               pathname: prevDest,
               state: prevState
             }}
-            className='text-decoration-none text-dark'
+            className='text-decoration-none text-light'
           >
             &lt;- Go back
           </Link>
