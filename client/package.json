@@ -14,6 +14,7 @@
     "bootstrap": "^5.1.1",
     "clipboard-copy": "^4.0.1",
     "dayjs": "^1.10.7",
+    "highlight.js": "^11.2.0",
     "node-sass": "^6.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
