@@ -1,14 +1,16 @@
-export const searchParser = (rawQuery: string): void => {
-  // const rawQuery = 'my search tags:ui,react lang:typescript';
+import { SearchQuery } from '../typescript/interfaces';
 
+export const searchParser = (rawQuery: string): SearchQuery => {
   // Extract filters from query
   const tags = extractFilters(rawQuery, 'tags');
   const languages = extractFilters(rawQuery, 'lang');
   const query = rawQuery.replaceAll(/(tags|lang):[a-zA-Z]+(,[a-zA-Z]+)*/g, '');
 
-  console.log(tags);
-  console.log(languages);
-  console.log(query);
+  return {
+    query: query.trim(),
+    tags,
+    languages
+  };
 };
 
 const extractFilters = (query: string, filter: string): string[] => {

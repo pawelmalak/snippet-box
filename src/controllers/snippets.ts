@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { QueryTypes } from 'sequelize';
+import { QueryTypes, Op } from 'sequelize';
 import { sequelize } from '../db';
 import { asyncWrapper } from '../middleware';
 import { SnippetModel, Snippet_TagModel } from '../models';
@@ -10,7 +10,7 @@ import {
   Logger,
   createTags
 } from '../utils';
-import { Body } from '../typescript/interfaces';
+import { Body, SearchQuery } from '../typescript/interfaces';
 
 const logger = new Logger('snippets-controller');
 
@@ -206,6 +206,42 @@ export const countTags = asyncWrapper(
 
     res.status(200).json({
       data: result
+    });
+  }
+);
+
+/**
+ * @description Search snippets
+ * @route /api/snippets/search
+ * @request POST
+ */
+export const searchSnippets = asyncWrapper(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { query, tags, languages } = <SearchQuery>req.body;
+
+    console.log(query, tags, languages);
+
+    const languageFilter =
+      languages.length > 0 ? { [Op.in]: languages } : { [Op.notIn]: languages };
+
+    const snippets = await SnippetModel.findAll({
+      where: {
+        [Op.and]: [
+          {
+            [Op.or]: [
+              { title: { [Op.substring]: `${query}` } },
+              { description: { [Op.substring]: `${query}` } }
+            ]
+          },
+          {
+            language: languageFilter
+          }
+        ]
+      }
+    });
+
+    res.status(200).json({
+      data: snippets
     });
   }
 );

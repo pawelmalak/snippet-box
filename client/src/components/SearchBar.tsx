@@ -1,7 +1,9 @@
-import { useRef, useEffect, KeyboardEvent } from 'react';
+import { useRef, useEffect, KeyboardEvent, useContext } from 'react';
+import { SnippetsContext } from '../store';
 import { searchParser } from '../utils';
 
 export const SearchBar = (): JSX.Element => {
+  const { searchSnippets } = useContext(SnippetsContext);
   const inputRef = useRef<HTMLInputElement>(document.createElement('input'));
 
   useEffect(() => {
@@ -9,7 +11,11 @@ export const SearchBar = (): JSX.Element => {
   }, [inputRef]);
 
   const inputHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-    const rawQuery = searchParser(inputRef.current.value);
+    const query = searchParser(inputRef.current.value);
+
+    if (e.key === 'Enter') {
+      searchSnippets(query);
+    }
   };
 
   return (

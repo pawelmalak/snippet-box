@@ -5,6 +5,7 @@ import {
   deleteSnippet,
   getAllSnippets,
   getSnippet,
+  searchSnippets,
   updateSnippet
 } from '../controllers/snippets';
 import { requireBody } from '../middleware';
@@ -23,3 +24,4 @@ snippetRouter
   .delete(deleteSnippet);
 
 snippetRouter.route('/statistics/count').get(countTags);
+snippetRouter.route('/search').post(searchSnippets);

@@ -5,7 +5,7 @@ import { SnippetGrid } from '../components/Snippets/SnippetGrid';
 import { SearchBar } from '../components/SearchBar';
 
 export const Home = (): JSX.Element => {
-  const { snippets, getSnippets } = useContext(SnippetsContext);
+  const { snippets, getSnippets, searchResults } = useContext(SnippetsContext);
 
   useEffect(() => {
     getSnippets();
@@ -19,9 +19,9 @@ export const Home = (): JSX.Element => {
         <Fragment>
           <PageHeader title='Search' />
           <SearchBar />
-          {/* <div className='col-12 mb-4'>
-            <SnippetGrid snippets={snippets.filter(s => s.isPinned)} />
-          </div> */}
+          <div className='col-12 mb-4'>
+            <SnippetGrid snippets={searchResults} />
+          </div>
 
           {snippets.some(s => s.isPinned) && (
             <Fragment>
