@@ -31,9 +31,9 @@ export const SnippetDetails = (props: Props): JSX.Element => {
   const creationDate = dateParser(createdAt);
   const updateDate = dateParser(updatedAt);
 
-  const copyHandler = () => {
-    copy(code);
-  };
+  // const copyHandler = () => {
+  //   copy(code);
+  // };
 
   return (
     <Card>
@@ -75,6 +75,14 @@ export const SnippetDetails = (props: Props): JSX.Element => {
       {/* ACTIONS */}
       <div className='d-grid g-2' style={{ rowGap: '10px' }}>
         <Button
+          text='Delete'
+          color='danger'
+          small
+          outline
+          handler={() => deleteSnippet(id)}
+        />
+
+        <Button
           text='Edit'
           color='secondary'
           small
@@ -87,18 +95,24 @@ export const SnippetDetails = (props: Props): JSX.Element => {
             });
           }}
         />
+
         <Button
-          text='Delete'
-          color='danger'
+          text='Copy raw url'
+          color='secondary'
           small
           outline
-          handler={() => deleteSnippet(id)}
+          handler={() => {
+            const { protocol, host } = window.location;
+            const rawUrl = `${protocol}//${host}/api/snippets/raw/${id}`;
+            copy(rawUrl);
+          }}
         />
+
         <Button
           text='Copy code'
           color='secondary'
           small
-          handler={copyHandler}
+          handler={() => copy(code)}
         />
       </div>
     </Card>
