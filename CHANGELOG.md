@@ -1,3 +1,6 @@
+### v1.3.1 (2021-10-05)
+- Added support for raw snippets ([#15](https://github.com/pawelmalak/snippet-box/issues/15))
+
 ### v1.3 (2021-09-30)
 - Added dark mode ([#7](https://github.com/pawelmalak/snippet-box/issues/7))
 - Added syntax highlighting ([#14](https://github.com/pawelmalak/snippet-box/issues/14))

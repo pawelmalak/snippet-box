@@ -4,6 +4,7 @@ import {
   createSnippet,
   deleteSnippet,
   getAllSnippets,
+  getRawCode,
   getSnippet,
   updateSnippet
 } from '../controllers/snippets';
@@ -23,3 +24,5 @@ snippetRouter
   .delete(deleteSnippet);
 
 snippetRouter.route('/statistics/count').get(countTags);
+
+snippetRouter.route('/raw/:id').get(getRawCode);

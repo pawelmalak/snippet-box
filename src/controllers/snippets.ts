@@ -209,3 +209,28 @@ export const countTags = asyncWrapper(
     });
   }
 );
+
+/**
+ * @description Get raw snippet code
+ * @route /api/snippets/raw/:id
+ * @request GET
+ */
+export const getRawCode = asyncWrapper(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const snippet = await SnippetModel.findOne({
+      where: { id: req.params.id },
+      raw: true
+    });
+
+    if (!snippet) {
+      return next(
+        new ErrorResponse(
+          404,
+          `Snippet with id of ${req.params.id} was not found`
+        )
+      );
+    }
+
+    res.status(200).send(snippet.code);
+  }
+);
