@@ -1,12 +1,15 @@
+import { ReactNode } from 'react';
+
 interface Props {
   title?: string;
-  children?: JSX.Element | JSX.Element[];
+  children?: ReactNode;
   classes?: string;
   bodyClasses?: string;
 }
 
 export const Card = (props: Props): JSX.Element => {
-  const { title, children, classes, bodyClasses } = props;
+  const { title, children, classes = '', bodyClasses = '' } = props;
+
   const parentClasses = `card mb-3 ${classes}`;
   const childClasses = `card-body ${bodyClasses}`;
 
