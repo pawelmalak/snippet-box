@@ -2,17 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import { QueryTypes, Op } from 'sequelize';
 import { sequelize } from '../db';
 import { asyncWrapper } from '../middleware';
-import { SnippetModel, Snippet_TagModel } from '../models';
-import {
-  ErrorResponse,
-  getTags,
-  tagParser,
-  Logger,
-  createTags
-} from '../utils';
+import { SnippetModel, Snippet_TagModel, TagModel } from '../models';
+import { ErrorResponse, tagParser, Logger, createTags } from '../utils';
 import { Body, SearchQuery } from '../typescript/interfaces';
-
-const logger = new Logger('snippets-controller');
 
 /**
  * @description Create new snippet
@@ -57,24 +49,27 @@ export const createSnippet = asyncWrapper(
 export const getAllSnippets = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const snippets = await SnippetModel.findAll({
-      raw: true
-    });
-
-    await new Promise<void>(async resolve => {
-      try {
-        for await (let snippet of snippets) {
-          const tags = await getTags(+snippet.id);
-          snippet.tags = tags;
+      include: {
+        model: TagModel,
+        as: 'tags',
+        attributes: ['name'],
+        through: {
+          attributes: []
         }
-      } catch (err) {
-        logger.log('Error while fetching tags', 'ERROR');
-      } finally {
-        resolve();
       }
     });
 
+    const populatedSnippets = snippets.map(snippet => {
+      const rawSnippet = snippet.get({ plain: true });
+
+      return {
+        ...rawSnippet,
+        tags: rawSnippet.tags?.map(tag => tag.name)
+      };
+    });
+
     res.status(200).json({
-      data: snippets
+      data: populatedSnippets
     });
   }
 );
@@ -88,7 +83,14 @@ export const getSnippet = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const snippet = await SnippetModel.findOne({
       where: { id: req.params.id },
-      raw: true
+      include: {
+        model: TagModel,
+        as: 'tags',
+        attributes: ['name'],
+        through: {
+          attributes: []
+        }
+      }
     });
 
     if (!snippet) {
@@ -100,11 +102,14 @@ export const getSnippet = asyncWrapper(
       );
     }
 
-    const tags = await getTags(+req.params.id);
-    snippet.tags = tags;
+    const rawSnippet = snippet.get({ plain: true });
+    const populatedSnippet = {
+      ...rawSnippet,
+      tags: rawSnippet.tags?.map(tag => tag.name)
+    };
 
     res.status(200).json({
-      data: snippet
+      data: populatedSnippet
     });
   }
 );
@@ -116,6 +121,8 @@ export const getSnippet = asyncWrapper(
  */
 export const updateSnippet = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    console.log(req.body);
+
     let snippet = await SnippetModel.findOne({
       where: { id: req.params.id }
     });
@@ -219,10 +226,20 @@ export const searchSnippets = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { query, tags, languages } = <SearchQuery>req.body;
 
-    console.log(query, tags, languages);
+    // Check if query is empty
+    if (query === '' && !tags.length && !languages.length) {
+      res.status(200).json({
+        data: []
+      });
 
-    const languageFilter =
-      languages.length > 0 ? { [Op.in]: languages } : { [Op.notIn]: languages };
+      return;
+    }
+
+    const languageFilter = languages.length
+      ? { [Op.in]: languages }
+      : { [Op.notIn]: languages };
+
+    const tagFilter = tags.length ? { [Op.in]: tags } : { [Op.notIn]: tags };
 
     const snippets = await SnippetModel.findAll({
       where: {
@@ -237,6 +254,17 @@ export const searchSnippets = asyncWrapper(
             language: languageFilter
           }
         ]
+      },
+      include: {
+        model: TagModel,
+        as: 'tags',
+        attributes: ['name'],
+        where: {
+          name: tagFilter
+        },
+        through: {
+          attributes: []
+        }
       }
     });
 

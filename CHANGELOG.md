@@ -1,3 +1,8 @@
+### v1.4 (TBA)
+- Added search functionality ([#18](https://github.com/pawelmalak/snippet-box/issues/18))
+- Fixed date parsing bug ([#22](https://github.com/pawelmalak/snippet-box/issues/22))
+- Minor UI fixes
+
 ### v1.3 (2021-09-30)
 - Added dark mode ([#7](https://github.com/pawelmalak/snippet-box/issues/7))
 - Added syntax highlighting ([#14](https://github.com/pawelmalak/snippet-box/issues/14))
