@@ -6,11 +6,13 @@ import {
   Snippet,
   Response,
   TagCount,
-  NewSnippet
+  NewSnippet,
+  SearchQuery
 } from '../typescript/interfaces';
 
 export const SnippetsContext = createContext<Context>({
   snippets: [],
+  searchResults: [],
   currentSnippet: null,
   tagCount: [],
   getSnippets: () => {},
@@ -20,7 +22,8 @@ export const SnippetsContext = createContext<Context>({
   updateSnippet: (snippet: NewSnippet, id: number, isLocal?: boolean) => {},
   deleteSnippet: (id: number) => {},
   toggleSnippetPin: (id: number) => {},
-  countTags: () => {}
+  countTags: () => {},
+  searchSnippets: (query: SearchQuery) => {}
 });
 
 interface Props {
@@ -29,6 +32,7 @@ interface Props {
 
 export const SnippetsContextProvider = (props: Props): JSX.Element => {
   const [snippets, setSnippets] = useState<Snippet[]>([]);
+  const [searchResults, setSearchResults] = useState<Snippet[]>([]);
   const [currentSnippet, setCurrentSnippet] = useState<Snippet | null>(null);
   const [tagCount, setTagCount] = useState<TagCount[]>([]);
 
@@ -139,8 +143,19 @@ export const SnippetsContextProvider = (props: Props): JSX.Element => {
       .catch(err => redirectOnError());
   };
 
+  const searchSnippets = (query: SearchQuery): void => {
+    axios
+      .post<Response<Snippet[]>>('/api/snippets/search', query)
+      .then(res => {
+        setSearchResults(res.data.data);
+        console.log(res.data.data);
+      })
+      .catch(err => console.log(err));
+  };
+
   const context = {
     snippets,
+    searchResults,
     currentSnippet,
     tagCount,
     getSnippets,
@@ -150,7 +165,8 @@ export const SnippetsContextProvider = (props: Props): JSX.Element => {
     updateSnippet,
     deleteSnippet,
     toggleSnippetPin,
-    countTags
+    countTags,
+    searchSnippets
   };
 
   return (

@@ -1,3 +1,8 @@
+### v1.4 (2021-10-14)
+- Added search functionality ([#18](https://github.com/pawelmalak/snippet-box/issues/18))
+- Fixed date parsing bug ([#22](https://github.com/pawelmalak/snippet-box/issues/22))
+- Minor UI fixes
+
 ### v1.3.1 (2021-10-05)
 - Added support for raw snippets ([#15](https://github.com/pawelmalak/snippet-box/issues/15))
 

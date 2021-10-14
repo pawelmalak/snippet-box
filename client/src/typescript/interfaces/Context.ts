@@ -1,7 +1,8 @@
-import { TagCount, NewSnippet, Snippet } from '.';
+import { TagCount, NewSnippet, Snippet, SearchQuery } from '.';
 
 export interface Context {
   snippets: Snippet[];
+  searchResults: Snippet[];
   currentSnippet: Snippet | null;
   tagCount: TagCount[];
   getSnippets: () => void;
@@ -12,4 +13,5 @@ export interface Context {
   deleteSnippet: (id: number) => void;
   toggleSnippetPin: (id: number) => void;
   countTags: () => void;
+  searchSnippets: (query: SearchQuery) => void;
 }

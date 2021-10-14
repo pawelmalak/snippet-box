@@ -29,25 +29,23 @@ export const Snippet = (): JSX.Element => {
       ) : (
         <Fragment>
           <PageHeader title='' prevDest={from} />
-          <div className='row mt-3'>
-            <div className='col-12 col-md-7 col-lg-8'>
-              <SnippetCode
-                code={currentSnippet.code}
-                language={currentSnippet.language}
-              />
-            </div>
-            <div className='col-12 col-md-5 col-lg-4'>
-              <SnippetDetails snippet={currentSnippet} />
-            </div>
-            {currentSnippet.docs && (
-              <div className='col-12'>
-                <Card title='Snippet documentation'>
-                  <hr />
-                  <SnippetDocs markdown={currentSnippet.docs} />
-                </Card>
-              </div>
-            )}
+          <div className='col-12 col-md-7 col-lg-8 mt-3'>
+            <SnippetCode
+              code={currentSnippet.code}
+              language={currentSnippet.language}
+            />
           </div>
+          <div className='col-12 col-md-5 col-lg-4 mt-md-3'>
+            <SnippetDetails snippet={currentSnippet} />
+          </div>
+          {currentSnippet.docs && (
+            <div className='col-12'>
+              <Card title='Snippet documentation'>
+                <hr />
+                <SnippetDocs markdown={currentSnippet.docs} />
+              </Card>
+            </div>
+          )}
         </Fragment>
       )}
     </Layout>
