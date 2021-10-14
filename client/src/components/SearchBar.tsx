@@ -15,6 +15,9 @@ export const SearchBar = (): JSX.Element => {
 
     if (e.key === 'Enter') {
       searchSnippets(query);
+    } else if (e.key === 'Escape') {
+      inputRef.current.value = '';
+      searchSnippets(searchParser(inputRef.current.value));
     }
   };
 
@@ -27,8 +30,8 @@ export const SearchBar = (): JSX.Element => {
         ref={inputRef}
         onKeyUp={e => inputHandler(e)}
       />
-      <div className='form-text text-gray'>
-        Submit search query by pressing `Enter`. Read more about available
+      <div className='form-text text-gray ms-1'>
+        Search by pressing `Enter`. Clear with `Esc`. Read more about available
         filters{' '}
         <a
           href='https://github.com/pawelmalak/snippet-box/wiki/Search-filters'

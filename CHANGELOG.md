@@ -1,4 +1,4 @@
-### v1.4 (TBA)
+### v1.4 (2021-10-14)
 - Added search functionality ([#18](https://github.com/pawelmalak/snippet-box/issues/18))
 - Fixed date parsing bug ([#22](https://github.com/pawelmalak/snippet-box/issues/22))
 - Minor UI fixes

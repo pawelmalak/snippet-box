@@ -64,12 +64,29 @@ docker buildx build \
 docker run -p 5000:5000 -v /path/to/data:/app/data snippet-box
 ```
 
+#### Docker Compose
+
+```yaml
+version: '3'
+services:
+  snippet-box:
+    image: pawelmalak/snippet-box:latest
+    container_name: snippet-box
+    volumes:
+      - /path/to/host/data:/app/data
+    ports:
+      - 5000:5000
+    restart: unless-stopped
+```
+
 ### Without Docker
 
 Follow instructions from wiki - [Installation without Docker](https://github.com/pawelmalak/snippet-box/wiki/Installation-without-Docker)
 
 ## Functionality
 
+- Search
+  - Search your snippets with built-in tags and language filters
 - Pinned snippets
   - Pin your favorite / important snippets to home screen for easy and quick access
 
@@ -92,3 +109,9 @@ Follow instructions from wiki - [Installation without Docker](https://github.com
   - Create and edit your snippets from simple and easy to use editor
 
 ![Editor screenshot](./.github/img/editor.png)
+
+## Usage
+
+### Search functionality
+
+Visit wiki for search functionality and available filters reference: [Search functionality](https://github.com/pawelmalak/snippet-box/wiki/Search-functionality)

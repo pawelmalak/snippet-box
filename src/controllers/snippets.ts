@@ -121,8 +121,6 @@ export const getSnippet = asyncWrapper(
  */
 export const updateSnippet = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    console.log(req.body);
-
     let snippet = await SnippetModel.findOne({
       where: { id: req.params.id }
     });
