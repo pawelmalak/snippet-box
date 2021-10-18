@@ -3,6 +3,7 @@ declare global {
     interface ProcessEnv {
       PORT: number;
       NODE_ENV: string;
+      JWT_SECRET: string;
     }
   }
 }
