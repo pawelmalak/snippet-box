@@ -1,8 +1,9 @@
-import { useState, createContext } from 'react';
+import { useState, createContext, ReactNode } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+
 import {
-  Context,
+  SnippetsContext as Context,
   Snippet,
   Response,
   TagCount,
@@ -27,7 +28,7 @@ export const SnippetsContext = createContext<Context>({
 });
 
 interface Props {
-  children: JSX.Element | JSX.Element[];
+  children: ReactNode;
 }
 
 export const SnippetsContextProvider = (props: Props): JSX.Element => {
@@ -153,7 +154,7 @@ export const SnippetsContextProvider = (props: Props): JSX.Element => {
       .catch(err => console.log(err));
   };
 
-  const context = {
+  const context: Context = {
     snippets,
     searchResults,
     currentSnippet,

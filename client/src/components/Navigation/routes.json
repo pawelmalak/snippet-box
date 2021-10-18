@@ -2,15 +2,18 @@
   "routes": [
     {
       "name": "Home",
-      "dest": "/"
+      "dest": "/",
+      "isPublic": true
     },
     {
       "name": "Snippets",
-      "dest": "/snippets"
+      "dest": "/snippets",
+      "isPublic": true
     },
     {
       "name": "Editor",
-      "dest": "/editor"
+      "dest": "/editor",
+      "isPublic": false
     }
   ]
 }

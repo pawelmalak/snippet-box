@@ -1,6 +1,6 @@
 import { TagCount, NewSnippet, Snippet, SearchQuery } from '.';
 
-export interface Context {
+export interface SnippetsContext {
   snippets: Snippet[];
   searchResults: Snippet[];
   currentSnippet: Snippet | null;
@@ -14,4 +14,9 @@ export interface Context {
   toggleSnippetPin: (id: number) => void;
   countTags: () => void;
   searchSnippets: (query: SearchQuery) => void;
+}
+
+export interface AuthContext {
+  isAuthenticated: boolean;
+  login: (formData: { email: string; password: string }) => void;
 }

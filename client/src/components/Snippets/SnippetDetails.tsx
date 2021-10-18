@@ -1,6 +1,6 @@
-import { useContext } from 'react';
+import { Fragment, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { SnippetsContext } from '../../store';
+import { SnippetsContext, AuthContext } from '../../store';
 import { Snippet } from '../../typescript/interfaces';
 import { dateParser } from '../../utils';
 import { Badge, Button, Card } from '../UI';
@@ -27,13 +27,10 @@ export const SnippetDetails = (props: Props): JSX.Element => {
   const history = useHistory();
 
   const { deleteSnippet, setSnippet } = useContext(SnippetsContext);
+  const { isAuthenticated } = useContext(AuthContext);
 
   const creationDate = dateParser(createdAt);
   const updateDate = dateParser(updatedAt);
-
-  // const copyHandler = () => {
-  //   copy(code);
-  // };
 
   return (
     <Card>
@@ -74,27 +71,31 @@ export const SnippetDetails = (props: Props): JSX.Element => {
 
       {/* ACTIONS */}
       <div className='d-grid g-2' style={{ rowGap: '10px' }}>
-        <Button
-          text='Delete'
-          color='danger'
-          small
-          outline
-          handler={() => deleteSnippet(id)}
-        />
+        {isAuthenticated && (
+          <Fragment>
+            <Button
+              text='Delete'
+              color='danger'
+              small
+              outline
+              handler={() => deleteSnippet(id)}
+            />
 
-        <Button
-          text='Edit'
-          color='secondary'
-          small
-          outline
-          handler={() => {
-            setSnippet(id);
-            history.push({
-              pathname: `/editor/${id}`,
-              state: { from: window.location.pathname }
-            });
-          }}
-        />
+            <Button
+              text='Edit'
+              color='secondary'
+              small
+              outline
+              handler={() => {
+                setSnippet(id);
+                history.push({
+                  pathname: `/editor/${id}`,
+                  state: { from: window.location.pathname }
+                });
+              }}
+            />
+          </Fragment>
+        )}
 
         <Button
           text='Copy raw url'
