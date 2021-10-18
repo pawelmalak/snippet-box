@@ -1,4 +1,4 @@
-import { TagModel, SnippetModel, Snippet_TagModel } from '../models';
+import { TagModel, SnippetModel, Snippet_TagModel, UserModel } from '../models';
 
 export const associateModels = async () => {
   TagModel.belongsToMany(SnippetModel, {
@@ -11,5 +11,15 @@ export const associateModels = async () => {
     through: Snippet_TagModel,
     foreignKey: 'snippet_id',
     as: 'tags'
+  });
+
+  UserModel.hasMany(SnippetModel, {
+    foreignKey: 'createdBy',
+    as: 'snippets'
+  });
+
+  SnippetModel.belongsTo(UserModel, {
+    foreignKey: 'createdBy',
+    as: 'user'
   });
 };

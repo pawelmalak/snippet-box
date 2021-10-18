@@ -9,6 +9,7 @@ export interface Snippet extends Model {
   docs: string;
   isPinned: number;
   tags?: { name: string }[];
+  createdBy: number;
 }
 
 export interface SnippetCreationAttributes
