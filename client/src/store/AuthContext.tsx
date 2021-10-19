@@ -1,6 +1,8 @@
-import { useState, createContext, ReactNode } from 'react';
+import axios from 'axios';
+import { createContext, ReactNode } from 'react';
 
-import { AuthContext as Context } from '../typescript/interfaces';
+import { AuthContext as Context, Response } from '../typescript/interfaces';
+import { errorHandler } from '../utils';
 
 export const AuthContext = createContext<Context>({
   isAuthenticated: false,
@@ -13,7 +15,19 @@ interface Props {
 
 export const AuthContextProvider = (props: Props): JSX.Element => {
   const login = async (formData: { email: string; password: string }) => {
-    console.table(formData);
+    try {
+      const res = await axios.post<Response<{ token: string }>>(
+        '/api/auth/login',
+        formData
+      );
+
+      localStorage.setItem('token', res.data.data.token);
+
+      // get profile
+      // redirect to snippets? / home?
+    } catch (err) {
+      errorHandler(err);
+    }
   };
 
   const context: Context = {

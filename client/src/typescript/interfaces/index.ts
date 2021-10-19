@@ -5,3 +5,4 @@ export * from './Response';
 export * from './Context';
 export * from './Statistics';
 export * from './SearchQuery';
+export * from './User';
