@@ -21,5 +21,6 @@ export interface AuthContext {
   user: UserWithRole | null;
   autoLogin: () => void;
   login: (formData: { email: string; password: string }) => void;
+  logout: () => void;
   register: (formData: { email: string; password: string }) => void;
 }

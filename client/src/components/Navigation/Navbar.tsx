@@ -13,15 +13,17 @@ export const Navbar = (): JSX.Element => {
       <div className='container-fluid'>
         <ul className='navbar-nav'>
           {isAuthenticated
-            ? routes.map((route, idx) => (
-                <li className='nav-item' key={idx}>
-                  <NavLink exact to={route.dest} className='nav-link'>
-                    {route.name}
-                  </NavLink>
-                </li>
-              ))
+            ? routes
+                .filter(r => !r.hideFromAuthenticated)
+                .map((route, idx) => (
+                  <li className='nav-item' key={idx}>
+                    <NavLink exact to={route.dest} className='nav-link'>
+                      {route.name}
+                    </NavLink>
+                  </li>
+                ))
             : routes
-                .filter(r => r.isPublic)
+                .filter(r => !r.requiresAuthentication)
                 .map((route, idx) => (
                   <li className='nav-item' key={idx}>
                     <NavLink exact to={route.dest} className='nav-link'>

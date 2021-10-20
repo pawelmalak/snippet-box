@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useState } from 'react';
 import axios from 'axios';
 
-import { loginUser, registerUser } from './actions';
+import { loginUser, logoutUser, registerUser } from './actions';
 
 import {
   AuthContext as Context,
@@ -16,6 +16,7 @@ export const AuthContext = createContext<Context>({
   user: null,
   autoLogin: () => {},
   login: () => {},
+  logout: () => {},
   register: () => {}
 });
 
@@ -35,6 +36,10 @@ export const AuthContextProvider = (props: Props): JSX.Element => {
 
   const login = async (formData: { email: string; password: string }) => {
     await loginUser({ formData, setIsAuthenticated, setUser });
+  };
+
+  const logout = () => {
+    logoutUser({ setIsAuthenticated, setUser });
   };
 
   const register = async (formData: { email: string; password: string }) => {
@@ -60,6 +65,7 @@ export const AuthContextProvider = (props: Props): JSX.Element => {
     user,
     autoLogin,
     login,
+    logout,
     register
   };
 

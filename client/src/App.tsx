@@ -1,7 +1,7 @@
 import { Fragment, useContext, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { Navbar } from './components/Navigation/Navbar';
-import { Editor, Home, Snippet, Snippets, Auth } from './containers';
+import { Editor, Home, Snippet, Snippets, Auth, Profile } from './containers';
 import { ProtectedRoute } from './utils';
 import { AuthContext } from './store';
 
@@ -27,6 +27,7 @@ export const App = () => {
         <Route path='/snippet/:id' component={Snippet} />
         <Route path='/auth' component={Auth} />
         <ProtectedRoute path='/editor/:id?' component={Editor} />
+        <ProtectedRoute path='/me' component={Profile} />
       </Switch>
     </Fragment>
   );

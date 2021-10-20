@@ -5,6 +5,6 @@ export interface User extends Model {
   role: string;
 }
 
-export interface UserWithRole extends Model {
+export interface UserWithRole extends User {
   isAdmin: boolean;
 }

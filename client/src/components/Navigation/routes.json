@@ -3,22 +3,32 @@
     {
       "name": "Home",
       "dest": "/",
-      "isPublic": true
+      "requiresAuthentication": false,
+      "hideFromAuthenticated": false
     },
     {
       "name": "Snippets",
       "dest": "/snippets",
-      "isPublic": true
+      "requiresAuthentication": false,
+      "hideFromAuthenticated": false
     },
     {
       "name": "Editor",
       "dest": "/editor",
-      "isPublic": false
+      "requiresAuthentication": true,
+      "hideFromAuthenticated": false
     },
     {
       "name": "Auth",
       "dest": "/auth",
-      "isPublic": true
+      "requiresAuthentication": false,
+      "hideFromAuthenticated": true
+    },
+    {
+      "name": "Profile",
+      "dest": "/me",
+      "requiresAuthentication": true,
+      "hideFromAuthenticated": false
     }
   ]
 }
