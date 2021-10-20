@@ -1,10 +1,8 @@
 import { sign } from 'jsonwebtoken';
+import { Token } from '../typescript/interfaces';
 
-type Data = string | object | Buffer;
-
-export const signToken = (data: Data): string => {
-  const secret =
-    process.env.JWT_SECRET || 'x7-joXEF89Q5hUx9Od5mibNVQb9vUuLr1091TMZSM-w';
+export const signToken = (data: Token): string => {
+  const secret = process.env.JWT_SECRET || 'secret';
 
   const token = sign(data, secret, {
     expiresIn: '30d'

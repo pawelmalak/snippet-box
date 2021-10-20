@@ -6,7 +6,7 @@ import { connectDB } from './db';
 import { errorHandler } from './middleware';
 
 // Routers
-import { snippetRouter } from './routes/snippets';
+import { snippetRouter, authRouter } from './routes';
 import { associateModels } from './db/associateModels';
 
 // Env config
@@ -27,6 +27,7 @@ app.get(/^\/(?!api)/, (req: Request, res: Response) => {
 
 // Routes
 app.use('/api/snippets', snippetRouter);
+app.use('/api/auth', authRouter);
 
 // Error handler
 app.use(errorHandler);

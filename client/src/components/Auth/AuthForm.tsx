@@ -5,7 +5,7 @@ import { Button } from '../UI';
 export const AuthForm = (): JSX.Element => {
   const [isInLogin, setIsInLogin] = useState(true);
   const [formData, setFormData] = useState({ email: '', password: '' });
-  const { login } = useContext(AuthContext);
+  const { login, register } = useContext(AuthContext);
 
   const inputHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -21,7 +21,7 @@ export const AuthForm = (): JSX.Element => {
     if (isInLogin) {
       login(formData);
     } else {
-      // register
+      register(formData);
     }
   };
 

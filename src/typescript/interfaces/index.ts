@@ -5,3 +5,5 @@ export * from './Snippet_Tag';
 export * from './Body';
 export * from './SearchQuery';
 export * from './User';
+export * from './Token';
+export * from './Request';

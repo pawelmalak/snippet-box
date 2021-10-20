@@ -1,4 +1,4 @@
-import { TagCount, NewSnippet, Snippet, SearchQuery } from '.';
+import { TagCount, NewSnippet, Snippet, SearchQuery, UserWithRole } from '.';
 
 export interface SnippetsContext {
   snippets: Snippet[];
@@ -18,5 +18,8 @@ export interface SnippetsContext {
 
 export interface AuthContext {
   isAuthenticated: boolean;
+  user: UserWithRole | null;
+  autoLogin: () => void;
   login: (formData: { email: string; password: string }) => void;
+  register: (formData: { email: string; password: string }) => void;
 }
