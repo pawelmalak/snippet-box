@@ -1,5 +1,5 @@
 import { User, Response, UserWithRole } from '../../../typescript/interfaces';
-import { errorHandler } from '../../../utils';
+import { authErrorHandler } from '../../../utils';
 import axios from 'axios';
 import React from 'react';
 
@@ -32,6 +32,6 @@ export const registerUser = async (params: Params) => {
 
     setIsAuthenticated(true);
   } catch (err) {
-    errorHandler(err);
+    authErrorHandler({ err, setIsAuthenticated, setUser });
   }
 };

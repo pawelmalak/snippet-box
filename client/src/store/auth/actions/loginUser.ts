@@ -1,5 +1,5 @@
 import { User, Response, UserWithRole } from '../../../typescript/interfaces';
-import { errorHandler } from '../../../utils';
+import { authErrorHandler } from '../../../utils';
 import axios from 'axios';
 import React from 'react';
 
@@ -31,9 +31,7 @@ export const loginUser = async (params: Params) => {
     localStorage.setItem('token', resToken);
 
     setIsAuthenticated(true);
-
-    // redirect to snippets? / home?
   } catch (err) {
-    errorHandler(err);
+    authErrorHandler({ err, setIsAuthenticated, setUser });
   }
 };

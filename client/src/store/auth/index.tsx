@@ -1,24 +1,12 @@
-import { createContext, ReactNode, useState } from 'react';
-import axios from 'axios';
+import { ReactNode, useState } from 'react';
+import { AuthContext } from '..';
 
-import { loginUser, logoutUser, registerUser } from './actions';
+import { getUserProfile, loginUser, logoutUser, registerUser } from './actions';
 
 import {
   AuthContext as Context,
-  Response,
-  User,
   UserWithRole
 } from '../../typescript/interfaces';
-import { errorHandler } from '../../utils';
-
-export const AuthContext = createContext<Context>({
-  isAuthenticated: false,
-  user: null,
-  autoLogin: () => {},
-  login: () => {},
-  logout: () => {},
-  register: () => {}
-});
 
 interface Props {
   children: ReactNode;
@@ -47,17 +35,7 @@ export const AuthContextProvider = (props: Props): JSX.Element => {
   };
 
   const getProfile = async (token: string) => {
-    try {
-      const res = await axios.get<Response<User>>('/api/auth/me', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      console.log(res.data.data);
-    } catch (err) {
-      errorHandler(err);
-    }
+    await getUserProfile({ token, setIsAuthenticated, setUser });
   };
 
   const context: Context = {
