@@ -1,28 +1,33 @@
 import { Router } from 'express';
+import { authenticate, requireBody } from '../middleware';
+
 import {
-  countTags,
   createSnippet,
-  deleteSnippet,
   getAllSnippets,
-  getRawCode,
   getSnippet,
+  deleteSnippet,
+  countTags,
+  getRawCode,
   searchSnippets,
   updateSnippet
-} from '../controllers/snippets';
-import { requireBody } from '../middleware';
+} from '../controllers/snippets/';
 
 export const snippetRouter = Router();
 
 snippetRouter
   .route('/')
-  .post(requireBody('title', 'language', 'code'), createSnippet)
+  .post(
+    authenticate,
+    requireBody('title', 'language', 'code', 'tags'),
+    createSnippet
+  )
   .get(getAllSnippets);
 
 snippetRouter
   .route('/:id')
-  .get(getSnippet)
-  .put(updateSnippet)
-  .delete(deleteSnippet);
+  .get(authenticate, getSnippet)
+  .put(authenticate, updateSnippet)
+  .delete(authenticate, deleteSnippet);
 
 snippetRouter.route('/statistics/count').get(countTags);
 snippetRouter.route('/raw/:id').get(getRawCode);
