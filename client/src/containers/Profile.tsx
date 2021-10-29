@@ -1,10 +1,11 @@
 import { Fragment, useContext } from 'react';
-import { AuthContext } from '../store';
+import { AuthContext, SnippetsContext } from '../store';
 import { Button, Card, Layout } from '../components/UI';
 import { dateParser } from '../utils';
 
 export const Profile = (): JSX.Element => {
   const { user, logout } = useContext(AuthContext);
+  const { clearOnLogout } = useContext(SnippetsContext);
 
   return (
     <Layout>
@@ -39,7 +40,10 @@ export const Profile = (): JSX.Element => {
                   color='secondary'
                   outline
                   small
-                  handler={logout}
+                  handler={() => {
+                    logout();
+                    clearOnLogout();
+                  }}
                 />
               </div>
             </Fragment>

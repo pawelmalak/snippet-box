@@ -40,13 +40,11 @@ export const SnippetsContextProvider = (props: Props): JSX.Element => {
     await getSnippetByIdAction({ id, setCurrentSnippet });
   };
 
-  const setSnippet = async (id: number) => {
+  const setSnippet = (id: number) => {
     if (id < 0) {
       setCurrentSnippet(null);
       return;
     }
-
-    await getSnippetById(id);
 
     const snippet = snippets.find(s => s.id === id);
 
@@ -117,6 +115,12 @@ export const SnippetsContextProvider = (props: Props): JSX.Element => {
     }
   };
 
+  const clearOnLogout = () => {
+    setCurrentSnippet(null);
+    setTagCount([]);
+    setSnippets([]);
+  };
+
   const context: Context = {
     snippets,
     searchResults,
@@ -130,7 +134,8 @@ export const SnippetsContextProvider = (props: Props): JSX.Element => {
     deleteSnippet,
     toggleSnippetPin,
     countTags,
-    searchSnippets
+    searchSnippets,
+    clearOnLogout
   };
 
   return (

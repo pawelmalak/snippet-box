@@ -14,6 +14,7 @@ export interface SnippetsContext {
   toggleSnippetPin: (id: number) => void;
   countTags: () => void;
   searchSnippets: (query: SearchQuery) => void;
+  clearOnLogout: () => void;
 }
 
 export interface AuthContext {

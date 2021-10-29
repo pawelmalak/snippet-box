@@ -20,7 +20,8 @@ export const SnippetsContext = createContext<SnippetsContextInterface>({
   deleteSnippet: (id: number) => {},
   toggleSnippetPin: (id: number) => {},
   countTags: () => {},
-  searchSnippets: (query: SearchQuery) => {}
+  searchSnippets: (query: SearchQuery) => {},
+  clearOnLogout: () => {}
 });
 
 export const AuthContext = createContext<AuthContextInterface>({

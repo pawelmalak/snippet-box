@@ -5,10 +5,12 @@ import { SnippetGrid } from '../components/Snippets/SnippetGrid';
 import { SearchBar } from '../components/SearchBar';
 
 export const Home = (): JSX.Element => {
-  const { snippets, getSnippets, searchResults } = useContext(SnippetsContext);
+  const { snippets, getSnippets, searchResults, countTags } =
+    useContext(SnippetsContext);
 
   useEffect(() => {
     getSnippets();
+    countTags();
   }, []);
 
   return (
