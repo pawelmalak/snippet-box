@@ -21,7 +21,7 @@ snippetRouter
     requireBody('title', 'language', 'code', 'tags'),
     createSnippet
   )
-  .get(getAllSnippets);
+  .get(authenticate, getAllSnippets);
 
 snippetRouter
   .route('/:id')
@@ -29,6 +29,6 @@ snippetRouter
   .put(authenticate, updateSnippet)
   .delete(authenticate, deleteSnippet);
 
-snippetRouter.route('/statistics/count').get(countTags);
-snippetRouter.route('/raw/:id').get(getRawCode);
-snippetRouter.route('/search').post(searchSnippets);
+snippetRouter.route('/statistics/count').get(authenticate, countTags);
+snippetRouter.route('/raw/:id').get(authenticate, getRawCode);
+snippetRouter.route('/search').post(authenticate, searchSnippets);

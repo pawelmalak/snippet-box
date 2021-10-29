@@ -1,7 +1,8 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import { asyncWrapper } from '../../middleware';
 import { SnippetModel, TagModel } from '../../models';
 import { Op } from 'sequelize';
+import { UserInfoRequest } from '../../typescript/interfaces';
 
 interface Body {
   query: string;
@@ -17,7 +18,7 @@ interface Body {
  */
 export const searchSnippets = asyncWrapper(
   async (
-    req: Request<{}, {}, Body>,
+    req: UserInfoRequest<Body>,
     res: Response,
     next: NextFunction
   ): Promise<void> => {
@@ -49,6 +50,9 @@ export const searchSnippets = asyncWrapper(
           },
           {
             language: languageFilter
+          },
+          {
+            createdBy: req.user.id
           }
         ]
       },

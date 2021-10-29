@@ -1,8 +1,8 @@
 import { Response, NextFunction } from 'express';
 import { asyncWrapper } from '../../middleware';
 import { SnippetModel, Snippet_TagModel } from '../../models';
-import { Snippet, UserInfoRequest } from '../../typescript/interfaces';
-import { tagParser, createTags, ErrorResponse } from '../../utils';
+import { UserInfoRequest } from '../../typescript/interfaces';
+import { ErrorResponse } from '../../utils';
 
 interface Params {
   id: number;

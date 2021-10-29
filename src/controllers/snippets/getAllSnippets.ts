@@ -1,6 +1,7 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import { asyncWrapper } from '../../middleware';
 import { SnippetModel, TagModel } from '../../models';
+import { UserInfoRequest } from '../../typescript/interfaces';
 
 /**
  * @description Get all snippets
@@ -8,7 +9,13 @@ import { SnippetModel, TagModel } from '../../models';
  * @request GET
  */
 export const getAllSnippets = asyncWrapper(
-  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  async (
+    req: UserInfoRequest,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    let where = req.user.isAdmin ? {} : { createdBy: req.user.id };
+
     const snippets = await SnippetModel.findAll({
       include: {
         model: TagModel,
@@ -17,7 +24,8 @@ export const getAllSnippets = asyncWrapper(
         through: {
           attributes: []
         }
-      }
+      },
+      where
     });
 
     const populatedSnippets = snippets.map(snippet => {

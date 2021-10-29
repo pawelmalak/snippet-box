@@ -1,7 +1,7 @@
 import { Request } from 'express';
 
-export interface UserInfoRequest<body = {}, params = {}>
-  extends Request<params, {}, body> {
+export interface UserInfoRequest<body = {}, params = {}, query = {}>
+  extends Request<params, {}, body, query> {
   user: {
     id: number;
     email: string;
