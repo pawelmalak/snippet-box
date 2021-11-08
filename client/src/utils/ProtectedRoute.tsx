@@ -10,6 +10,13 @@ export const ProtectedRoute = ({ ...rest }: RouteProps) => {
   if (isAuthenticated) {
     return <Route {...rest} />;
   } else {
-    return <Redirect to='/auth' />;
+    return (
+      <Redirect
+        to={{
+          pathname: '/auth',
+          state: { from: window.location.pathname }
+        }}
+      />
+    );
   }
 };

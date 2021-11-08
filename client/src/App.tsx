@@ -2,19 +2,30 @@ import { Fragment, useContext, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { Navbar } from './components/Navigation/Navbar';
 import { Editor, Home, Snippet, Snippets, Auth, Profile } from './containers';
-import { ProtectedRoute } from './utils';
-import { AuthContext } from './store';
+import { decodeToken, ProtectedRoute } from './utils';
+import { AuthContext, SnippetsContext } from './store';
 
 export const App = () => {
-  const { autoLogin } = useContext(AuthContext);
+  const { autoLogin, logout } = useContext(AuthContext);
+  const { getSnippets, countTags } = useContext(SnippetsContext);
 
   useEffect(() => {
-    // autoLogin();
-    // const checker = setInterval(() => {
-    //   autoLogin();
-    //   console.log('cake');
-    // }, 1000);
-    // return () => window.clearInterval(checker);
+    autoLogin();
+
+    getSnippets();
+    countTags();
+
+    const checkTokenValidity = setInterval(() => {
+      if (localStorage.token) {
+        const { exp: expiresAt } = decodeToken(localStorage.token);
+
+        if (Date.now() > expiresAt * 1000) {
+          logout();
+        }
+      }
+    }, 1000);
+
+    return () => window.clearInterval(checkTokenValidity);
   }, []);
 
   return (

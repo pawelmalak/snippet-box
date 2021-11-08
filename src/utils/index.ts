@@ -7,3 +7,4 @@ export * from './createAdmin';
 export * from './hashPassword';
 export * from './signToken';
 export * from './createAdmin';
+export * from './resourceExists';

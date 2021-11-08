@@ -11,5 +11,7 @@ export const errorHandler = (err: any) => {
     msg = 'Something went wrong';
   }
 
+  // todo: emit notification
+  // redirect on error
   console.log(msg);
 };

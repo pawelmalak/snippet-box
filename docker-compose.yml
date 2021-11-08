@@ -7,4 +7,6 @@ services:
       - /path/to/host/data:/app/data
     ports:
       - 5000:5000
+    environment:
+      - NODE_ENV: production
     restart: unless-stopped
