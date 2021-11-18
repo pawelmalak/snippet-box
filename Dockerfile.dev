@@ -1,11 +1,10 @@
-FROM node:14-alpine
+FROM node:14-alpine AS builder
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN apk --no-cache --virtual build-dependencies add python make g++ \
-    && npm install
+RUN npm install
     
 COPY . .
 
@@ -21,8 +20,15 @@ RUN npm run build \
 
 # Clean up src files
 RUN rm -rf src/ ./client \
-    && npm prune --production \
-    && apk del build-dependencies
+    && npm prune --production
+
+FROM node:14-alpine
+
+USER node
+
+WORKDIR /app
+
+COPY --from=builder /app /app
 
 EXPOSE 5000
 
