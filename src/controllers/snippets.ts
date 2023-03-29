@@ -259,10 +259,10 @@ export const searchSnippets = asyncWrapper(
     }
 
     const languageFilter = languages.length
-      ? { [Op.in]: languages }
+      ? { [Op.like]: languages }
       : { [Op.notIn]: languages };
 
-    const tagFilter = tags.length ? { [Op.in]: tags } : { [Op.notIn]: tags };
+    const tagFilter = tags.length ? { [Op.like]: tags } : { [Op.notIn]: tags };
 
     const snippets = await SnippetModel.findAll({
       where: {
