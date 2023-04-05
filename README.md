@@ -1,5 +1,7 @@
 # Snippet Box
 
+![Snippet-box logo](.github/img/snippet-box-logo-full.png)
+
 ![Snippet library screenshot](./.github/img/snippets.png)
 
 ## Description
@@ -70,7 +72,7 @@ docker run -p 5000:5000 -v /path/to/data:/app/data snippet-box
 version: '3'
 services:
   snippet-box:
-    image: pawelmalak/snippet-box:latest
+    image: pawelmalak/snippet-box:latest  # Image for Raspberry-Pi: snippet-box:arm 
     container_name: snippet-box
     volumes:
       - /path/to/host/data:/app/data
